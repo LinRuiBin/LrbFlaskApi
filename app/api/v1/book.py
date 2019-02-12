@@ -8,6 +8,7 @@ from app.libs.redprint import Redprint
 from app.models.book import Book
 from app.validators.forms import BookSearchForm
 from flask import jsonify
+from app.libs.token_auth import auth
 
 __author__ = 'LRB'
 
@@ -27,6 +28,7 @@ def search():
 
 
 @api.route('/<isbn>/detail')
+@auth.login_required
 def detail(isbn):
     book = Book.query.filter_by(isbn=isbn).first_or_404()
     return jsonify(book)
