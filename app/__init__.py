@@ -15,9 +15,12 @@ def register_blueprints(app):
 def register_plugin(app):
     create_apidoc(app)
     create_dbdata(app)
+    create_admin(app)
 
+    from flask_bootstrap import Bootstrap
+    Bootstrap(app=app)
 
-# 自动生成文档 /docs/api/
+# 自动生成文档 /docs/api/ debug模式下显示
 def create_apidoc(app):
     from flask_docs import ApiDoc
     from app.api.v1 import docApis_v1
@@ -34,8 +37,15 @@ def create_dbdata(app):
     with app.app_context():
         db.create_all()
 
+
+#自动管理平台
+def create_admin(app):
+    from app.admin import init_admin
+    init_admin(app)
+
+
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__,template_folder='templates')
     app.config.from_object('app.config.setting')
     app.config.from_object('app.config.secure')
 
