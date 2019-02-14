@@ -4,18 +4,35 @@
 from .app import Flask
 __author__ = 'LRB'
 
+_cache = {}
 
+#蓝图 v1
 def register_blueprints(app):
-    from app.api.v1 import create_blueprint_v1
+    from app.api.v1 import create_blueprint_v1,docApis_v1
     app.register_blueprint(create_blueprint_v1(), url_prefix='/v1')
 
-
+# 插件初始化
 def register_plugin(app):
+    create_apidoc(app)
+    create_dbdata(app)
+
+
+# 自动生成文档 /docs/api/
+def create_apidoc(app):
+    from flask_docs import ApiDoc
+    from app.api.v1 import docApis_v1
+
+    docapis = list(set([] + docApis_v1))
+    app.config['API_DOC_MEMBER'] = docapis
+    app.config['RESTFUL_API_DOC_EXCLUDE'] = []
+    ApiDoc(app)
+
+#数据库
+def create_dbdata(app):
     from app.models.base import db
     db.init_app(app)
     with app.app_context():
         db.create_all()
-
 
 def create_app():
     app = Flask(__name__)
@@ -25,5 +42,11 @@ def create_app():
     register_blueprints(app)
     register_plugin(app)
 
+    _cache['app'] = app
+
     return app
 
+
+# 防止循环引用
+def get_app():
+    return _cache['app']

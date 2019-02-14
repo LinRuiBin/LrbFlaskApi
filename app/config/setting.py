@@ -6,3 +6,6 @@ __author__ = 'LRB'
 
 
 TOKEN_EXPIRATION = 30 * 24 * 3600
+
+DEBUG = True
+API_DOC_ENABLE = DEBUG

@@ -2,7 +2,7 @@
 
 #my-config
 secure.py
-
+.dea/workspace.xml
 __pycache__/
 *.py[cod]
 *$py.class

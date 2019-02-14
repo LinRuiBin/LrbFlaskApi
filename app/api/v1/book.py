@@ -17,6 +17,12 @@ api = Redprint('book')
 
 @api.route('/search')
 def search():
+    """
+    搜索书籍
+    模糊搜索 标题 出版社
+    :param q
+    :return:
+    """
     form = BookSearchForm().validate_for_api()
     q = '%' + form.q.data + '%'
     # book = Book()

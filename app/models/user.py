@@ -17,7 +17,7 @@ class User(Base):
     email = Column(String(24), unique=True, nullable=False)
     nickname = Column(String(24), unique=True)
     auth = Column(SmallInteger, default=1)
-    # phone = Column(String(24), unique=True)
+    phone = Column(String(24), unique=True)
     _password = Column('password', String(100))
 
     def keys(self):

@@ -6,6 +6,7 @@ from app.api.v1 import user, book, client, token,gift
 
 __author__ = 'LRB'
 
+docApis_v1= ['v1.user','v1.book','v1.client','v1.token','v1.gift']
 
 def create_blueprint_v1():
     bp_v1 = Blueprint('v1', __name__)
