@@ -1,0 +1,44 @@
+{% extends "admin/my_master.html" %}
+
+  {{ super() }}
+  {% block rightcontent %}
+
+    <div class="panel panel-default">
+      <div class="panel-body">
+         <p>自定义gift界面GiftAdmin 继承自flask-admin baseView</p>
+              <p>这是从admin传过来的hello参数： {{hello}}</p>
+      </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-body">
+         <p>自定义gift界面GiftAdmin 继承自flask-admin baseView</p>
+              <p>这是从admin传过来的hello参数： {{hello}}</p>
+      </div>
+    </div>
+    <div class="panel panel-success">
+        <div class="panel-body">
+         <p>自定义gift界面GiftAdmin 继承自flask-admin baseView</p>
+              <p>这是从admin传过来的hello参数： {{hello}}</p>
+      </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-body">
+         <p>自定义gift界面GiftAdmin 继承自flask-admin baseView</p>
+              <p>这是从admin传过来的hello参数： {{hello}}</p>
+      </div>
+    </div>
+    <div class="panel panel-warning">
+        <div class="panel-body">
+         自定义gift界面GiftAdmin 继承自flask-admin baseView
+            这是从admin传过来的hello参数： {{hello}}
+      </div>
+    </div>
+    <div class="panel panel-danger">
+        <div class="panel-body">
+         <p>自定义gift界面GiftAdmin 继承自flask-admin baseView</p>
+              <p>这是从admin传过来的hello参数： {{hello}}</p>
+      </div>
+    </div>
+
+  {% endblock %}

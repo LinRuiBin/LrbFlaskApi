@@ -41,11 +41,14 @@ def create_dbdata(app):
 #自动管理平台
 def create_admin(app):
     from app.admin import init_admin
+    from flask_babelex import Babel
+
     init_admin(app)
+    Babel(app)
 
 
 def create_app():
-    app = Flask(__name__,template_folder='templates')
+    app = Flask(__name__,template_folder='templates',)
     app.config.from_object('app.config.setting')
     app.config.from_object('app.config.secure')
 
