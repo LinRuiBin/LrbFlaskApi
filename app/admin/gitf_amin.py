@@ -7,4 +7,4 @@ class GiftAdmin(BaseView):
 
     def __init__(self):
         # Just call parent class with predefined model.
-        super(GiftAdmin, self).__init__(name='礼物管理(自定义界面示范)')
+        super(GiftAdmin, self).__init__(name='礼物管理(自定义界面示范)',url='gift',)
