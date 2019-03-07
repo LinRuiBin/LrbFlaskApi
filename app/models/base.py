@@ -83,6 +83,11 @@ class Base(db.Model):
             self.fields.remove(key)
         return self
 
+    def update_fields(self,*ufields):
+        if ufields:
+            self.fields = list(ufields)
+        return self
+
     def append(self, *keys):
         for key in keys:
             self.fields.append(key)

@@ -20,7 +20,8 @@ class Book(Base):
     pubdate = Column(String(20))
     isbn = Column(String(15), nullable=False, unique=True)
     summary = Column(String(1000))
-    image = Column(String(50))
+    image = Column(String(200))
+    extra = Column(String(200))
 
 
     @orm.reconstructor

@@ -2,11 +2,22 @@
  Created by LRB on 2018/5/7.
 
 """
+from flask import jsonify
+
 from werkzeug.exceptions import HTTPException
 
 from app.libs.error import APIException
 
 __author__ = 'LRB'
+
+def DataSuccess(data=None,**ext):
+    response = { 'code' : '200', 'msg' : 'ok'}
+    if(data):
+        response['data'] = data
+    if(ext):
+        response.update(ext)
+
+    return jsonify(response)
 
 
 class Success(APIException):

@@ -12,7 +12,8 @@ from flask_script import Manager
 from app import create_app
 from flask_migrate import Migrate,MigrateCommand
 from app.models.base import db
-from app.models import user
+# 必须导入需要更新的模型
+from app.models import user,book
 
 app = create_app()
 manager = Manager(app)

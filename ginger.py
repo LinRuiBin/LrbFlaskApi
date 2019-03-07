@@ -5,11 +5,12 @@ from werkzeug.exceptions import HTTPException
 from app import create_app
 from app.libs.error import APIException
 from app.libs.error_code import ServerError
+from flask_script import Manager
 
 __author__ = 'LRB'
 
 app = create_app()
-
+manager = Manager(app)
 
 @app.errorhandler(Exception)
 def framework_error(e):
@@ -30,4 +31,4 @@ def framework_error(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

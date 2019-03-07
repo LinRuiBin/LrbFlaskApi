@@ -1,6 +1,6 @@
 from app.models.book import Book
 from app.admin.admin_base import MyModelView
-
+from jinja2 import Markup
 
 class BookAdmin(MyModelView):
 
@@ -46,6 +46,15 @@ class BookAdmin(MyModelView):
      'isbn':'编号牌',
      'summary':'摘要',
      'image':'图片',
+    }
+
+    def _list_image(view, context, model, name):
+        if not model.image:
+            return ''
+        return Markup('<img src="%s" height="100" width="80" >' % model.image)
+
+    column_formatters = {
+        'image': _list_image
     }
 
     def __init__(self, session):

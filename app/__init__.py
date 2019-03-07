@@ -52,11 +52,10 @@ def create_app():
     app.config.from_object('app.config.setting')
     app.config.from_object('app.config.secure')
 
-    register_blueprints(app)
-    register_plugin(app)
-
     _cache['app'] = app
 
+    register_blueprints(app)
+    register_plugin(app)
     return app
 
 
