@@ -47,7 +47,7 @@ class UserEmailForm(ClientForm):
 
 
 class BookSearchForm(Form):
-    q = StringField(validators=[DataRequired()])
+    q = StringField(validators=[DataRequired(message="搜索参数不能为空")])
 
 
 class TokenForm(Form):

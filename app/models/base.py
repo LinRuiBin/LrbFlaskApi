@@ -48,7 +48,6 @@ class Query(BaseQuery):
 
 db = SQLAlchemy(query_class=Query)
 
-
 class Base(db.Model):
     __abstract__ = True
     create_time = Column(Integer)
@@ -94,6 +93,8 @@ class Base(db.Model):
         return self
 
 
+
+# 如果模型继承 db.model 则可多继承 MixinJSONSerializer 重写 _set_fields 方法 给 _fields 等赋值即可
 class MixinJSONSerializer:
     @orm.reconstructor
     def init_on_load(self):
@@ -105,7 +106,7 @@ class MixinJSONSerializer:
         self.__prune_fields()
 
     def _set_fields(self):
-        pass
+         pass
 
     def __prune_fields(self):
         columns = inspect(self.__class__).columns

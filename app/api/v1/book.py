@@ -16,7 +16,9 @@ from app import get_app
 __author__ = 'LRB'
 
 api = Redprint('book')
+
 app = get_app()
+
 
 @api.route('/search')
 def search():

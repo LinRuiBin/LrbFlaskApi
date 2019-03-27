@@ -48,6 +48,7 @@ def create_admin(app):
 
 
 def create_app():
+    # print("create app")
     app = Flask(__name__,template_folder='templates',)
     app.config.from_object('app.config.setting')
     app.config.from_object('app.config.secure')
@@ -61,4 +62,5 @@ def create_app():
 
 # 防止循环引用
 def get_app():
+    # print("get app")
     return _cache['app']
