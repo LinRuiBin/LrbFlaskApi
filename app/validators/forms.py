@@ -8,7 +8,8 @@ from wtforms import ValidationError
 from app.libs.enums import ClientTypeEnum
 from app.models.user import User
 from app.validators.base import BaseForm as Form
-
+from app.models.base import db
+from app.libs.error_code import RegisteredException
 __author__ = 'LRB'
 
 
@@ -19,6 +20,26 @@ class ClientForm(Form):
     secret = StringField()
     type = IntegerField(validators=[DataRequired()])
 
+    def validate_type(self, value):
+        try:
+            if (isinstance(value.data,str)):
+                value.data = int(value.data)
+            client = ClientTypeEnum(int(value.data))
+        except ValueError as e:
+            raise e
+        self.type.data = client
+
+    def validate_account(self, value):
+        user = User.query.filter_by(emial=value).first()
+        if user:
+            raise RegisteredException()
+
+
+
+# 微信登录 注册
+class WxClientForm(Form):
+    code=StringField(validators=[DataRequired()])
+    type=IntegerField(validators=[DataRequired()]) #微信小程序type 200
     def validate_type(self, value):
         try:
             if (isinstance(value.data,str)):

@@ -9,19 +9,22 @@ from app.libs.error_code import NotFound, AuthFailed
 from app.models.base import Base, db, MixinJSONSerializer
 import datetime
 
-__author__ = 'LRB'
+import requests,json
 
+__author__ = 'LRB'
 
 class User(Base):
     id = Column(Integer, primary_key=True)
-    email = Column(String(24), unique=True, nullable=False)
-    nickname = Column(String(24), unique=True)
-    auth = Column(SmallInteger, default=1)
-    phone = Column(String(24), unique=True)
+    email = Column(String(24), unique=True,index=True)
+    nickname = Column(String(24))
+    auth = Column(SmallInteger, default=1) #权限 1 为普通用户 2 为管理员
+    phone = Column(String(24), unique=True,index=True)
+    avatar = Column(String(200))
+    gender = Column(Integer)
     _password = Column('password', String(100))
 
     def keys(self):
-        return ['id', 'email', 'nickname', 'auth']
+        return ['id', 'email', 'nickname', 'auth','avater','gender']
 
     @property
     def password(self):
@@ -48,11 +51,32 @@ class User(Base):
         scope = 'AdminScope' if user.auth == 2 else 'UserScope'
         return {'uid': user.id, 'scope': scope}
 
+    @property
+    def scope(self):
+        return 'AdminScope' if self.auth == 2 else 'UserScope'
+
     def check_password(self, raw):
         if not self._password:
             return False
         return check_password_hash(self._password, raw)
 
-    # def _set_fields(self):
+
+        # def _set_fields(self):
     #     # self._exclude = ['_password']
     #     self._fields = ['_password', 'nickname']
+
+
+class OauthMemberBind(Base):
+
+    __tablename__ = 'oauth_member_bind'
+    __table_args__ = (
+        db.Index('idx_openid_type', 'type', 'openid'),  # 联合索引
+    )
+    id = Column(Integer, primary_key=True)
+    user = db.relationship(User, backref='oauthBind')
+    user_id = Column(Integer,db.ForeignKey(User.id),nullable=False)
+    client_type = Column(db.String(20))
+    type = Column(Integer, nullable=False)
+    openid = Column(String(80), nullable=False,unique=True)
+    unionid = Column(String(100))
+    extra = Column(String(200))

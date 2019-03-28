@@ -10,10 +10,10 @@ from app.libs.token_auth import auth
 from app.models.base import db
 from app.models.user import User
 
+
 __author__ = 'LRB'
 
 api = Redprint('user')
-
 
 @api.route('/<int:uid>', methods=['GET'])
 @auth.login_required

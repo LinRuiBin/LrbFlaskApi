@@ -19,6 +19,15 @@ def DataSuccess(data=None,**ext):
 
     return jsonify(response)
 
+def DataFail(data=None,**ext):
+    response = { 'code' : '400', 'msg' : 'fail'}
+    if(data):
+        response['data'] = data
+    if(ext):
+        response.update(ext)
+
+    return jsonify(response)
+
 
 class Success(APIException):
     code = 201
@@ -75,3 +84,9 @@ class DuplicateGift(APIException):
     code = 400
     error_code = 2001
     msg = 'the current book has already in gift'
+
+
+class RegisteredException(APIException):
+    code = 400
+    error_code = 2001
+    msg = '此用户已经注册'

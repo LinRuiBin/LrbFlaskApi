@@ -16,7 +16,6 @@ api = Redprint('token')
 
 __author__ = 'LRB'
 
-
 @api.route('', methods=['POST'])
 def get_token():
     form = ClientForm().validate_for_api()
