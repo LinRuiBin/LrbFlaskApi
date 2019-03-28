@@ -20,7 +20,7 @@ from flask import current_app
 __author__ = 'LRB'
 
 api = Redprint('client')
-app = get_app()
+app = current_app
 
 @api.route('/register', methods=['POST'])
 def create_client():
@@ -36,23 +36,10 @@ def create_client():
 @api.route('/wx_register', methods=['POST'])
 def create_clent_wx():
 
-    # user_info = User.query.first()
-    #
-    # expiration = current_app.config['TOKEN_EXPIRATION']
-    # token = generate_auth_token(user_info.id,
-    #                             ClientTypeEnum(200),
-    #                             user_info.scope,
-    #                             expiration)
-    # data = {}
-    # data["token"] = token.decode('ascii')
-    # data["userinfo"] = {"nickname": user_info.nickname, "avatar": user_info.avatar}
-    # res = {"code": 200, "data": data, "msg": "登录成功"}
-    # return jsonify(res)
-
     form = WxClientForm().validate_for_api() #验证
     req = request.values
     code = form.code.data
-    wxopenId = getWeChatOpenId(code)
+    wxopenId = OauthMemberBind.getWeChatOpenId(code)
     if not wxopenId:
       return DataFail(data=None,msg="微信注册失败")
 
@@ -82,31 +69,18 @@ def create_clent_wx():
 
         bind_info = model_bind
 
-    user_info = User.query.filter_by(id=bind_info.user_id).first()
+    user_info = User.query.filter(User.id==bind_info.user_id).first()
 
     expiration = current_app.config['TOKEN_EXPIRATION']
-    token = generate_auth_token(user_info.id,
-                                form.type.data,
-                                user_info.scope,
+    token = generate_auth_token(user_info.id ,
+                                ClientTypeEnum(200) ,
+                                user_info.scope ,
                                 expiration)
-
     data = {}
     data["token"] = token.decode('ascii')
-    data["userinfo"] = {"nickname":user_info.nickname,"avatar":user_info.avatar}
-    res = {"code":200,"data":data,"msg":"登录成功"}
+    data["userInfo"] = {"nickname": user_info.nickname , "avatar": user_info.avatar}
+    res = {"code": 200 , "data": data , "msg": "登录成功"}
     return jsonify(res)
-
-
-
-def getWeChatOpenId(code):
-    url = "https://api.weixin.qq.com/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type=authorization_code" \
-        .format(app.config['MINA_APP']['appid'], app.config['MINA_APP']['appkey'], code)
-    r = requests.get(url)
-    res = json.loads(r.text)
-    openid = None
-    if 'openid' in res:
-        openid = res['openid']
-    return openid
 
 
 def __register_user_by_email():

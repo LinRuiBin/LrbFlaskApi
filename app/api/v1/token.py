@@ -5,10 +5,10 @@
 from flask import current_app, jsonify
 
 from app.libs.enums import ClientTypeEnum
-from app.libs.error_code import AuthFailed
+from app.libs.error_code import AuthFailed,DataFail
 from app.libs.redprint import Redprint
-from app.models.user import User
-from app.validators.forms import ClientForm, TokenForm
+from app.models.user import User,OauthMemberBind
+from app.validators.forms import ClientForm, TokenForm,WxClientForm
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired, \
     BadSignature
 
@@ -31,6 +31,29 @@ def get_token():
     token = generate_auth_token(identity['uid'],
                                 form.type.data,
                                 identity['scope'],
+                                expiration)
+    t = {
+        'token': token.decode('ascii')
+    }
+    return jsonify(t), 201
+
+@api.route('/wx_login', methods=['POST'])
+def get_wxtoken():
+    form = WxClientForm().validate_for_api()
+    code = form.code.data
+    wxopenId = OauthMemberBind.getWeChatOpenId(code)
+    if not wxopenId:
+        return DataFail(data=None , msg="微信登录失败")
+    bind_info = OauthMemberBind.query.filter_by(openid=wxopenId , type=form.type.data.value).first()
+    # Token
+    user_info = User.query.filter(User.id == bind_info.user_id).first()
+    if not user_info:
+        return DataFail(msg="尚未授权登录")
+
+    expiration = current_app.config['TOKEN_EXPIRATION']
+    token = generate_auth_token(user_info.id ,
+                                ClientTypeEnum(200) ,
+                                user_info.scope ,
                                 expiration)
     t = {
         'token': token.decode('ascii')

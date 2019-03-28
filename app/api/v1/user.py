@@ -34,7 +34,8 @@ def get_user():
     获取当前用户信息
     :return:
     """
-    uid = g.user.id
+    tuser = g.user
+    uid = g.user.uid
     user = User.query.filter_by(id=uid).first_or_404()
     return jsonify(user)
 

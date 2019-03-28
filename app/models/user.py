@@ -9,6 +9,8 @@ from app.libs.error_code import NotFound, AuthFailed
 from app.models.base import Base, db, MixinJSONSerializer
 import datetime
 
+from flask import current_app
+
 import requests,json
 
 __author__ = 'LRB'
@@ -80,3 +82,14 @@ class OauthMemberBind(Base):
     openid = Column(String(80), nullable=False,unique=True)
     unionid = Column(String(100))
     extra = Column(String(200))
+
+    @staticmethod
+    def getWeChatOpenId(code):
+        url = "https://api.weixin.qq.com/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type=authorization_code" \
+            .format(current_app.config['MINA_APP']['appid'] , current_app.config['MINA_APP']['appkey'] , code)
+        r = requests.get(url)
+        res = json.loads(r.text)
+        openid = None
+        if 'openid' in res:
+            openid = res['openid']
+        return openid
