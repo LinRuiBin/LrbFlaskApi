@@ -12,7 +12,7 @@ class APIException(HTTPException):
     code = 500
     msg = 'sorry, we made a mistake (*￣︶￣)!'
     error_code = 999
-
+    data = {}
     def __init__(self, msg=None, code=None, error_code=None,
                  headers=None):
         if code:

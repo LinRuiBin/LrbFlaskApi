@@ -4,7 +4,7 @@
 """
 from flask import jsonify, g
 
-from app.libs.error_code import DeleteSuccess, AuthFailed
+from app.libs.error_code import DeleteSuccess, AuthFailed,DataSuccess
 from app.libs.redprint import Redprint
 from app.libs.token_auth import auth
 from app.models.base import db
@@ -37,7 +37,10 @@ def get_user():
     tuser = g.user
     uid = g.user.uid
     user = User.query.filter_by(id=uid).first_or_404()
-    return jsonify(user)
+    data = {}
+    data["userInfo"] = {"nickname": user.nickname, "avatar": user.avatar}
+    res = {"code": 200, "data": data, "msg": "登录成功"}
+    return jsonify(res)
 
 
 @api.route('/<int:uid>', methods=['DELETE'])

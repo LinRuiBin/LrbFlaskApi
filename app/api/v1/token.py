@@ -43,12 +43,14 @@ def get_wxtoken():
     code = form.code.data
     wxopenId = OauthMemberBind.getWeChatOpenId(code)
     if not wxopenId:
-        return DataFail(data=None , msg="微信登录失败")
+        raise AuthFailed(msg="微信登录失败")
     bind_info = OauthMemberBind.query.filter_by(openid=wxopenId , type=form.type.data.value).first()
+    if not bind_info:
+        raise AuthFailed(msg="尚未授权登录")
     # Token
     user_info = User.query.filter(User.id == bind_info.user_id).first()
     if not user_info:
-        return DataFail(msg="尚未授权登录")
+        raise AuthFailed(msg="尚未授权登录")
 
     expiration = current_app.config['TOKEN_EXPIRATION']
     token = generate_auth_token(user_info.id ,

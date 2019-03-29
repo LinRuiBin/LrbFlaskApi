@@ -26,7 +26,7 @@ class User(Base):
     _password = Column('password', String(100))
 
     def keys(self):
-        return ['id', 'email', 'nickname', 'auth','avater','gender']
+        return ['id', 'email', 'nickname','avatar','gender']
 
     @property
     def password(self):

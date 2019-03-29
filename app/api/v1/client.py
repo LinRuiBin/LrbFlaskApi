@@ -37,7 +37,8 @@ def create_client():
 def create_clent_wx():
 
     form = WxClientForm().validate_for_api() #验证
-    req = request.values
+    # req = request.values
+    req = request.get_json(silent=True)
     code = form.code.data
     wxopenId = OauthMemberBind.getWeChatOpenId(code)
     if not wxopenId:
