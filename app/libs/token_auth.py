@@ -42,10 +42,10 @@ def verify_auth_token(token):
         data = s.loads(token)
     except BadSignature:
         raise AuthFailed(msg='token is invalid',
-                         error_code=1002)
+                         status=1002)
     except SignatureExpired:
         raise AuthFailed(msg='token is expired',
-                         error_code=1003)
+                         status=1003)
     uid = data['uid']
     ac_type = data['type']
     scope = data['scope']

@@ -4,7 +4,7 @@
 """
 from flask import jsonify, g
 
-from app.libs.error_code import DeleteSuccess, AuthFailed,DataSuccess
+from app.libs.error_code import DeleteSuccess, AuthFailed,SuccessReponse
 from app.libs.redprint import Redprint
 from app.libs.token_auth import auth
 from app.models.base import db
@@ -16,7 +16,7 @@ __author__ = 'LRB'
 api = Redprint('user')
 
 @api.route('/<int:uid>', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def super_get_user(uid):
     """
     管理源获取指定用户信息
@@ -24,7 +24,8 @@ def super_get_user(uid):
     :return:
     """
     user = User.query.filter_by(id=uid).first_or_404()
-    return jsonify(user)
+    data = {"userinfo":user}
+    return SuccessReponse(data=data)
 
 
 @api.route('', methods=['GET'])
@@ -34,13 +35,11 @@ def get_user():
     获取当前用户信息
     :return:
     """
-    tuser = g.user
     uid = g.user.uid
     user = User.query.filter_by(id=uid).first_or_404()
-    data = {}
-    data["userInfo"] = {"nickname": user.nickname, "avatar": user.avatar}
-    res = {"code": 200, "data": data, "msg": "登录成功"}
-    return jsonify(res)
+    user.update_fields('nickname','avatar')
+    data = {"userinfo": user}
+    return SuccessReponse(data=data)
 
 
 @api.route('/<int:uid>', methods=['DELETE'])

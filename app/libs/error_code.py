@@ -6,44 +6,46 @@ from flask import jsonify
 
 from werkzeug.exceptions import HTTPException
 
-from app.libs.error import APIException
+from app.libs.error import APIException,APIResponse
 
 __author__ = 'LRB'
 
-def DataSuccess(data=None,**ext):
-    response = { 'code' : '200', 'msg' : 'ok'}
-    if(data):
-        response['data'] = data
-    if(ext):
-        response.update(ext)
+class SuccessReponse(APIResponse):
+    code = 200
+    msg = 'success'
+    status = 1
 
-    return jsonify(response)
 
-def DataFail(data=None,**ext):
-    response = { 'code' : '400', 'msg' : 'fail'}
-    if(data):
-        response['data'] = data
-    if(ext):
-        response.update(ext)
+class NodataReponse(APIResponse):
+    code = 200
+    msg = 'no data'
+    status = 0
 
-    return jsonify(response)
-
+class FailReponse(APIResponse):
+    code = 200
+    msg = 'fail'
+    status = -1
 
 class Success(APIException):
+    code = 200
+    msg = 'ok'
+    status = 1
+
+class CreateSuccess(APIException):
     code = 201
     msg = 'ok'
-    error_code = 0
-
+    status = 1
 
 class DeleteSuccess(Success):
     code = 202
-    error_code = 1
+    msg = 'ok'
+    status = 1
 
 
 class ServerError(APIException):
     code = 500
     msg = 'sorry, we made a mistake (*￣︶￣)!'
-    error_code = 999
+    status = 999
 
 
 class ClientTypeError(APIException):
@@ -53,40 +55,40 @@ class ClientTypeError(APIException):
     # 301 302
     code = 400
     msg = 'client is invalid'
-    error_code = 1006
+    status = 1006
 
 
 class ParameterException(APIException):
     code = 400
     msg = 'invalid parameter'
-    error_code = 1000
+    status = 1000
 
 
 class NotFound(APIException):
     code = 404
     msg = 'the resource are not found O__O...'
-    error_code = 1001
+    status = 1001
 
 
 class AuthFailed(APIException):
     code = 401
-    error_code = 1005
+    status = 1005
     msg = 'authorization failed'
 
 
 class Forbidden(APIException):
     code = 403
-    error_code = 1004
+    status = 1004
     msg = 'forbidden, not in scope'
 
 
 class DuplicateGift(APIException):
     code = 400
-    error_code = 2001
+    status = 2001
     msg = 'the current book has already in gift'
 
 
 class RegisteredException(APIException):
     code = 400
-    error_code = 2001
-    msg = '此用户已经注册'
+    status = 2002
+    msg = 'user have been register'

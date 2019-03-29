@@ -10,7 +10,7 @@ from app.validators.forms import BookSearchForm
 from flask import jsonify,request
 from app.libs.token_auth import auth
 from app.libs.paginate import iPagination
-from app.libs.error_code import DataSuccess
+from app.libs.error_code import SuccessReponse
 from app import get_app
 
 __author__ = 'LRB'
@@ -65,6 +65,7 @@ def books():
     offset = ( page - 1 ) * app.config['PAGE_SIZE']
     list = query.order_by(Book.id).offset(offset).limit(app.config['PAGE_SIZE']).all()
     list = [book.update_fields('id','title', 'image','summary') for book in list]
-    return DataSuccess(data=list,pages=pages,msg='获取成功')
+    data = list
+    return SuccessReponse(data=data,msg="获取成功")
 
 

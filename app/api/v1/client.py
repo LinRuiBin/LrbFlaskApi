@@ -6,7 +6,7 @@
 import requests,json
 from flask import request, jsonify
 
-from app.libs.error_code import ClientTypeError, Success,DataFail,DataSuccess
+from app.libs.error_code import ClientTypeError, Success,NodataReponse,SuccessReponse,FailReponse
 from app.libs.redprint import Redprint
 from app.models.user import User,OauthMemberBind
 from app.validators.forms import ClientForm, UserEmailForm,WxClientForm
@@ -42,7 +42,7 @@ def create_clent_wx():
     code = form.code.data
     wxopenId = OauthMemberBind.getWeChatOpenId(code)
     if not wxopenId:
-      return DataFail(data=None,msg="微信注册失败")
+      raise FailReponse(data=None,msg="微信注册失败")
 
     nickname = req['nickName'] if 'nickName' in req else ''
     sex = req['gender'] if 'gender' in req else 0
@@ -80,8 +80,9 @@ def create_clent_wx():
     data = {}
     data["token"] = token.decode('ascii')
     data["userInfo"] = {"nickname": user_info.nickname , "avatar": user_info.avatar}
-    res = {"code": 200 , "data": data , "msg": "登录成功"}
-    return jsonify(res)
+    return SuccessReponse(data=data,msg="登录成功")
+    # res = {"code": 200 , "data": data , "msg": "登录成功"}
+    # return jsonify(res)
 
 
 def __register_user_by_email():

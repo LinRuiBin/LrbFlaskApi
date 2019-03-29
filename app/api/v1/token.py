@@ -5,7 +5,7 @@
 from flask import current_app, jsonify
 
 from app.libs.enums import ClientTypeEnum
-from app.libs.error_code import AuthFailed,DataFail
+from app.libs.error_code import AuthFailed,NodataReponse,SuccessReponse
 from app.libs.redprint import Redprint
 from app.models.user import User,OauthMemberBind
 from app.validators.forms import ClientForm, TokenForm,WxClientForm
@@ -71,9 +71,9 @@ def get_token_info():
     try:
         data = s.loads(form.token.data, return_header=True)
     except SignatureExpired:
-        raise AuthFailed(msg='token is expired', error_code=1003)
+        raise AuthFailed(msg='token is expired', status=1003)
     except BadSignature:
-        raise AuthFailed(msg='token is invalid', error_code=1002)
+        raise AuthFailed(msg='token is invalid', status=1002)
 
     r = {
         'scope': data[0]['scope'],

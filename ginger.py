@@ -19,8 +19,8 @@ def framework_error(e):
     if isinstance(e, HTTPException):
         code = e.code
         msg = e.description
-        error_code = 1007
-        return APIException(msg, code, error_code)
+        status = 1007
+        return APIException(msg, code, status)
     else:
         # 调试模式
         # log

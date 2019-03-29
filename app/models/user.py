@@ -25,8 +25,9 @@ class User(Base):
     gender = Column(Integer)
     _password = Column('password', String(100))
 
-    def keys(self):
-        return ['id', 'email', 'nickname','avatar','gender']
+    #这里会覆盖父类方法
+    # def keys(self):
+    #     return ['id', 'email', 'nickname','avatar','gender']
 
     @property
     def password(self):
@@ -62,10 +63,10 @@ class User(Base):
             return False
         return check_password_hash(self._password, raw)
 
+    @orm.reconstructor
+    def __init__(self):
+        self.fields = ['id', 'email', 'nickname','avatar','gender']
 
-        # def _set_fields(self):
-    #     # self._exclude = ['_password']
-    #     self._fields = ['_password', 'nickname']
 
 
 class OauthMemberBind(Base):
