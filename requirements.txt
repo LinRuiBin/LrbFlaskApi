@@ -30,10 +30,12 @@ jmespath==0.9.4
 Mako==1.0.7
 MarkupSafe==1.1.0
 oss2==2.6.1
+Pillow==6.0.0
 pycryptodome==3.8.1
 python-dateutil==2.8.0
 python-editor==1.0.4
 pytz==2018.9
+qrcode==6.1
 requests==2.18.4
 six==1.12.0
 speaklater==1.3

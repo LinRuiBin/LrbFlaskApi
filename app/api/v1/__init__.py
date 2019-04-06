@@ -2,7 +2,7 @@
  Created by LRB on 2018/5/8.
 """
 from flask import Blueprint
-from app.api.v1 import user, book, client, token,gift
+from app.api.v1 import user, book, client, token,gift,qrcode
 
 __author__ = 'LRB'
 
@@ -16,4 +16,5 @@ def create_blueprint_v1():
     client.api.register(bp_v1)
     token.api.register(bp_v1)
     gift.api.register(bp_v1)
+    qrcode.api.register(bp_v1)
     return bp_v1

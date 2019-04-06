@@ -42,6 +42,7 @@ def ueditor_uploadImage():
     # Endpoint以杭州为例，其它Region请按实际情况填写。
     bucket = oss2.Bucket(auth , app.config["OSS"]["domain"] , app.config["OSS"]["bucketname"])
     filename = "book_image/" + upfile.filename
+    upfile.seek(0)
     result = bucket.put_object(filename , upfile)
     if result.status == 200:
         resp['url'] = result.resp.response.url

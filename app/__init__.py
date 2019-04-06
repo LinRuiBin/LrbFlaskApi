@@ -11,6 +11,7 @@ _cache = {}
 def register_blueprints(app):
     from app.api.v1 import create_blueprint_v1,docApis_v1
     from app.api.upload.Ueditor import route_upload
+
     app.register_blueprint(create_blueprint_v1(), url_prefix='/v1')
     app.register_blueprint(route_upload,url_prefix = "/upload")
 
