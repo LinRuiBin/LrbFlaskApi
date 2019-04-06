@@ -12,5 +12,15 @@ DEBUG = True
 API_DOC_ENABLE = DEBUG
 BABEL_DEFAULT_LOCALE = 'zh_CN'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
-PAGE_SIZE = 10
-PAGE_DISPLAY = 10
+PAGE_SIZE = 20
+PAGE_DISPLAY = 20
+
+UPLOAD = {
+    'ext':[ 'jpg','gif','bmp','jpeg','png' ],
+    'prefix_path':'/static/upload/',
+    'prefix_url':'/static/upload/'
+}
+
+APP = {
+    'domain':'http://192.168.0.100:5000'
+}

@@ -2,6 +2,7 @@
  Created by LRB on 2018/5/7.
 """
 from .app import Flask
+import os
 __author__ = 'LRB'
 
 _cache = {}
@@ -9,13 +10,16 @@ _cache = {}
 #蓝图 v1
 def register_blueprints(app):
     from app.api.v1 import create_blueprint_v1,docApis_v1
+    from app.api.upload.Ueditor import route_upload
     app.register_blueprint(create_blueprint_v1(), url_prefix='/v1')
+    app.register_blueprint(route_upload,url_prefix = "/upload")
 
 # 插件初始化
 def register_plugin(app):
     create_apidoc(app)
     create_dbdata(app)
     create_admin(app)
+    createUserManager(app)
 
     from flask_bootstrap import Bootstrap
     Bootstrap(app=app)
@@ -47,9 +51,20 @@ def create_admin(app):
     Babel(app)
 
 
+#usermanager
+def createUserManager(app):
+
+    from app.libs.UrlManager import UrlManager
+
+    app.add_template_global(UrlManager.buildStaticUrl , 'buildStaticUrl')
+    app.add_template_global(UrlManager.buildUrl , 'buildUrl')
+    app.add_template_global(UrlManager.buildImageUrl , 'buildImageUrl')
+
+
 def create_app():
     # print("create app")
-    app = Flask(__name__,template_folder='templates',)
+    #root_path /app
+    app = Flask(__name__,template_folder='templates')
     app.config.from_object('app.config.setting')
     app.config.from_object('app.config.secure')
 

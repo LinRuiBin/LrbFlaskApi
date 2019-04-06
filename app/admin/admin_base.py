@@ -16,7 +16,7 @@ from flask_admin import helpers, expose
 from app.models import user
 from app.models.base import db
 
-
+#主管理员 2 副管理员 3
 class AdminUser(user.User):
     # is_active is_authenticated  is_anonymous  get_id 为flask login需要
     @property
@@ -25,7 +25,15 @@ class AdminUser(user.User):
 
     @property
     def is_authenticated(self):
+        return True if self.auth == 2 or self.auth == 3 else False
+
+    @property
+    def is_superuser(self):
         return True if self.auth == 2 else False
+
+    @property
+    def is_assituser(self):
+        return True if self.auth == 3 else False
 
     @property
     def is_anonymous(self):
@@ -52,7 +60,7 @@ class LoginForm(form.Form):
         # if user.password != self.password.data:
             raise validators.ValidationError('用户名或密码错误')
 
-        if user.auth != 2:
+        if user.auth != 2 and user.auth != 3:
             raise validators.ValidationError('没有权限')
 
     def get_user(self):

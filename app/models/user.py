@@ -15,14 +15,15 @@ import requests,json
 
 __author__ = 'LRB'
 
+#主管理员 2 副管理员 3 其他不是管理员
 class User(Base):
     id = Column(Integer, primary_key=True)
     email = Column(String(24), unique=True,index=True)
     nickname = Column(String(24))
-    auth = Column(SmallInteger, default=1) #权限 1 为普通用户 2 为管理员
+    auth = Column(SmallInteger, default=1) #权限 1 为普通用户 2 为管理员 3副管理员
     phone = Column(String(24), unique=True,index=True)
     avatar = Column(String(200))
-    gender = Column(Integer)
+    gender = Column(Integer) #男0 女1
     _password = Column('password', String(100))
 
     #这里会覆盖父类方法
@@ -51,12 +52,23 @@ class User(Base):
         user = User.query.filter_by(email=email).first_or_404()
         if not user.check_password(password):
             raise AuthFailed()
-        scope = 'AdminScope' if user.auth == 2 else 'UserScope'
+
+        scope = User.getscope(user.auth)
         return {'uid': user.id, 'scope': scope}
+
+    @staticmethod
+    def getscope(auth):
+        scope = 'UserScope'
+        if auth == 2:
+            scope = 'AdminScope'
+        elif auth == 3:
+            scope = 'AssistAdminScope'
+        else:
+            scope = 'UserScope'
 
     @property
     def scope(self):
-        return 'AdminScope' if self.auth == 2 else 'UserScope'
+        return User.getscope(self.auth)
 
     def check_password(self, raw):
         if not self._password:

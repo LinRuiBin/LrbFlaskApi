@@ -3,7 +3,8 @@
 
 {% block head_tail %}
   {{ super() }}
-  <link href="{{ url_for('static', filename='layout.css') }}" rel="stylesheet">
+  <link href="{{ buildStaticUrl('/css/admin/layout.css') }}" rel="stylesheet">
+  <!--<link href="{{ url_for('static', filename='admin/layout.css') }}" rel="stylesheet">-->
 {% endblock %}
 
 
@@ -69,5 +70,3 @@
 </div>
 
 {% endblock %}
-
-

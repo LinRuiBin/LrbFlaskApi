@@ -1,0 +1,13 @@
+{% extends 'admin/model/create.html' %}
+
+{% block head_tail %}
+    <link href="{{ buildStaticUrl('/css/admin/editor.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block tail %}
+    {{ super() }}
+ <script src="{{ buildStaticUrl('/plugins/ueditor/ueditor.config.js') }}"></script>
+ <script src="{{ buildStaticUrl('/plugins/ueditor/ueditor.all.min.js') }}"></script>
+ <script src="{{ buildStaticUrl('/plugins/ueditor/lang/zh-cn/zh-cn.js') }}"></script>
+ <script src="{{ buildStaticUrl('/js/creatEditor.js') }}"></script>
+{% endblock %}

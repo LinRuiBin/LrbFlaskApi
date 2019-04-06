@@ -1,6 +1,21 @@
 from app.models.book import Book
 from app.admin.admin_base import MyModelView
 from jinja2 import Markup
+from wtforms import fields, widgets
+
+class CKTextAreaWidget(widgets.TextArea):
+    def __call__(self, field, **kwargs):
+        # add WYSIWYG class to existing classes
+        kwargs.setdefault('id', 'editor')
+        existing_classes = kwargs.pop('class', '') or kwargs.pop('class_', '')
+        kwargs['class'] = '{} {}'.format(existing_classes,"editor")
+        return super(CKTextAreaWidget, self).__call__(field, **kwargs)
+
+
+class CKTextAreaField(fields.TextAreaField):
+     widget = CKTextAreaWidget()
+
+
 
 class BookAdmin(MyModelView):
 
@@ -15,8 +30,8 @@ class BookAdmin(MyModelView):
      'pages',
      'pubdate',
      'isbn',
-     'summary',
      'image'
+     'summary',
     ]
 
     column_default_sort = ('id',True)
@@ -56,6 +71,11 @@ class BookAdmin(MyModelView):
     column_formatters = {
         'image': _list_image
     }
+
+    form_overrides = {
+        'summary': CKTextAreaField
+    }
+    create_template = 'admin/create_book.html'
 
     def __init__(self, session):
         # Just call parent class with predefined model.
