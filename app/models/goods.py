@@ -43,6 +43,7 @@ class Light_Spu_category(db.Model):
         self.other_category = light_other_category
         self.light_spu = light_spu
 
+
 #灯spu
 class Light_Spu(Base):
     __tablename__ = 'light_spu'
@@ -53,12 +54,80 @@ class Light_Spu(Base):
     category_id = Column(db.Integer,db.ForeignKey('light_category.id'))
     category = db.relationship(Light_Category , backref='lights')
     other_categories = association_proxy("spu_other_categorys",'other_category')
-    # def __str__(self):
-    #     return "{}".format(self.name)
+    specs = association_proxy('spu_specs','spec')
+
+    def __str__(self):
+        return "{}".format(self.name)
 
 
 
+#规格表
+class Light_Spec(Base):
+    __tablename__ = 'light_spec'
+    id = Column(db.Integer , primary_key=True)
+    spec_num = Column(db.String(50) , unique=True,nullable=False)  # 规格编码
+    spec_name =  Column(db.String(50) , unique=True,nullable=False) #规格名称
 
+
+    def __str__(self):
+        return "{}".format(self.spec_name)
+
+#规格值表
+
+class Light_Spec_Value(Base):
+    __tablename__ = 'light_spec_value'
+    id = Column(db.Integer , primary_key=True)
+    spec_id = Column(db.Integer,db.ForeignKey('light_spec.id'))  # 规格id
+    spec = db.relationship(Light_Spec,backref='values')
+    spec_value =  Column(db.String(50) , unique=True,nullable=False) #规格值
+
+    def __str__(self):
+        return "{}".format(self.spec_value)
+
+
+#spu-规格表
+class Light_Spu_Spec(db.Model):
+    __tablename__ = 'light_spu_spec'
+
+    spu_id = db.Column(db.Integer , db.ForeignKey('light_spu.id'),primary_key=True)
+    spec_id = db.Column(db.Integer , db.ForeignKey('light_spec.id'),primary_key=True)
+    spu = db.relationship(Light_Spu , backref=db.backref("spu_specs",cascade="all, delete-orphan"))
+    spec = db.relationship(Light_Spec , backref=db.backref("spec_spus"))
+    spu_name = association_proxy('spu','name')
+    spec_name = association_proxy('spec','spec_name')
+
+    def __init__(self, selspec=None ,selspu=None):
+        self.spec = selspec
+        self.spu = selspu
+
+#sku表
+
+class Light_Sku(Base):
+    __tablename__ = 'light_sku'
+    id = Column(db.Integer , primary_key=True)
+    sku_num = Column(db.String(50) , unique=True,nullable=False) #sku编号
+    sku_name =  Column(db.String(50)) #规格名称
+    price = Column(db.Float ,nullable=False)
+    stock = Column(db.Integer,nullable=False,default=0)
+    spu_id = db.Column(db.Integer , db.ForeignKey('light_spu.id'),nullable=False)
+    spu = db.relationship(Light_Spu , backref=db.backref("spu_skus"))
+    spec_values = association_proxy('sku_specs','spec_value')
+    # spec_value_names = association_proxy('sku_specs','spec_value_name')
+
+#sku-spec对应表
+
+class Light_sku_spec(Base):
+    __tablename__ = 'light_sku_spec'
+    id = Column(db.Integer , primary_key=True)
+    sku_id = db.Column(db.Integer , db.ForeignKey('light_sku.id'))
+    sku = db.relationship(Light_Sku , backref=db.backref("sku_specs",cascade="all, delete-orphan"))
+    spec_value_id = db.Column(db.Integer , db.ForeignKey('light_spec_value.id'))
+    spec_value = db.relationship(Light_Spec_Value , backref=db.backref("svalue_skus"))
+
+
+    def __init__(self , selspec_value=None , selsku=None):
+        self.spec_value = selspec_value
+        self.sku = selsku
 
 #
 # #使用场景
