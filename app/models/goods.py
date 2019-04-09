@@ -2,7 +2,7 @@ from sqlalchemy import inspect, Column, Integer, String, SmallInteger, orm
 from app.libs.error_code import NotFound, AuthFailed
 from app.models.base import Base, db, MixinJSONSerializer
 from sqlalchemy.ext.associationproxy import association_proxy
-import datetime
+from datetime import datetime
 
 
 #多对一 照明分类
@@ -59,6 +59,15 @@ class Light_Spu(Base):
     def __str__(self):
         return "{}".format(self.name)
 
+
+#产品说明书 pdf
+class Light_Spu_Statement(Base):
+    __tablename__ = 'light_spu_statement'
+    id = Column(db.Integer , primary_key=True)
+    time = Column(db.DateTime,default=datetime.now,onupdate=datetime.now)
+    path = Column(db.String(100))
+    spu_id = Column(db.Integer,db.ForeignKey('light_spu.id'))
+    spu = db.relationship(Light_Spu , backref='pdfs')
 
 
 #规格表
@@ -123,7 +132,6 @@ class Light_sku_spec(Base):
     sku = db.relationship(Light_Sku , backref=db.backref("sku_specs",cascade="all, delete-orphan"))
     spec_value_id = db.Column(db.Integer , db.ForeignKey('light_spec_value.id'))
     spec_value = db.relationship(Light_Spec_Value , backref=db.backref("svalue_skus"))
-
 
     def __init__(self , selspec_value=None , selsku=None):
         self.spec_value = selspec_value

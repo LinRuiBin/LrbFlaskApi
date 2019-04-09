@@ -6,7 +6,7 @@ from app.admin.admin_base import MyAdminIndexView
 from app.admin.user_admin import UserAdmin,Assit_UserAdmin
 from app.admin.book_admin import BookAdmin
 from app.admin.gitf_amin import GiftAdmin
-from app.admin.goods_amin import Light_CategoryAdmin,Ligh_Other_CategoryAdmin,Ligh_Spu_Other_CategoryAdmin,Ligh_Spu_Admin,Ligh_Spec_Admin,Ligh_Spec_value_Admin,Ligh_Sku_Admin
+from app.admin.goods_amin import *
 
 def init_admin(app):
     admin_base.init_login(app)
@@ -22,5 +22,7 @@ def init_admin(app):
     fadmin.add_view(Ligh_Spec_Admin(db.session))
     fadmin.add_view(Ligh_Spec_value_Admin(db.session))
     fadmin.add_view(Ligh_Sku_Admin(db.session))
+    fadmin.add_view(Pdf_Statement_Admin(db.session))
+
     # fadmin.add_view(GiftAdmin())
 
