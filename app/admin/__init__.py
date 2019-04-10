@@ -15,14 +15,16 @@ def init_admin(app):
     fadmin.add_view(UserAdmin(db.session))
     fadmin.add_view(Assit_UserAdmin(db.session))
     # fadmin.add_view(BookAdmin(db.session))
+    fadmin.add_view(Ligh_Spu_Admin(db.session))
+    fadmin.add_view(Ligh_Sku_Admin(db.session))
+    fadmin.add_view(Qrcode_Statement_Admin(db.session))
+    fadmin.add_view(Pdf_Statement_Admin(db.session))
     fadmin.add_view(Light_CategoryAdmin(db.session))
     fadmin.add_view(Ligh_Other_CategoryAdmin(db.session))
-    fadmin.add_view(Ligh_Spu_Other_CategoryAdmin(db.session))
-    fadmin.add_view(Ligh_Spu_Admin(db.session))
+    # fadmin.add_view(Ligh_Spu_Other_CategoryAdmin(db.session))
     fadmin.add_view(Ligh_Spec_Admin(db.session))
     fadmin.add_view(Ligh_Spec_value_Admin(db.session))
-    fadmin.add_view(Ligh_Sku_Admin(db.session))
-    fadmin.add_view(Pdf_Statement_Admin(db.session))
+
 
     # fadmin.add_view(GiftAdmin())
 

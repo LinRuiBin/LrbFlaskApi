@@ -48,8 +48,8 @@ class Light_Spu_category(db.Model):
 class Light_Spu(Base):
     __tablename__ = 'light_spu'
     id = Column(db.Integer , primary_key=True)
-    name = Column(db.String(50) , nullable=False)
-    spu_num = Column(db.String(50) , unique=True,nullable=False)  # 商品编码
+    name = Column(db.String(50) ,nullable=False)
+    spu_num = Column(db.String(50), unique=True,nullable=False,index=True)  # 商品编码
     desc = Column(db.String(50) , nullable=True)
     category_id = Column(db.Integer,db.ForeignKey('light_category.id'))
     category = db.relationship(Light_Category , backref='lights')
@@ -58,6 +58,16 @@ class Light_Spu(Base):
 
     def __str__(self):
         return "{}".format(self.name)
+
+
+# 产品二维码
+class Light_Spu_Qrcode(Base):
+    __tablename__ = 'light_spu_qrcode'
+    id = Column(db.Integer , primary_key=True)
+    time = Column(db.DateTime , default=datetime.now , onupdate=datetime.now)
+    path = Column(db.String(100))
+    spu_id = Column(db.Integer, db.ForeignKey('light_spu.id'))
+    spu = db.relationship(Light_Spu , backref='qrcode',uselist=False)
 
 
 #产品说明书 pdf
@@ -75,8 +85,7 @@ class Light_Spec(Base):
     __tablename__ = 'light_spec'
     id = Column(db.Integer , primary_key=True)
     spec_num = Column(db.String(50) , unique=True,nullable=False)  # 规格编码
-    spec_name =  Column(db.String(50) , unique=True,nullable=False) #规格名称
-
+    spec_name = Column(db.String(50) , unique=True,nullable=False) #规格名称
 
     def __str__(self):
         return "{}".format(self.spec_name)

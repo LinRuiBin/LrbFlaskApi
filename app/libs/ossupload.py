@@ -53,6 +53,15 @@ def uploadpdf(upfile,filepath=None,filename=None,bucketName = None):
        return result.resp.response.url
 
 
+def uploadQrcode(qfile,filepath=None,filename=None,bucketName = None,prefix=None):
+    filename = tid_maker() + ".png"
+    if not filepath:
+        filepath = 'Qrcode/'
+    if prefix:
+        filename = prefix + '-' + filename
+    return uploadimage(qfile,filename=filename)
+
+
 def tid_maker():
     return '{0:%Y%m%d%H%M%S%f}'.format(datetime.datetime.now()) + ''.join(
         [str(random.randint(1 , 10)) for i in range(5)])

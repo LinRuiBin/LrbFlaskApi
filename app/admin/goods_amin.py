@@ -1,6 +1,7 @@
 from app.models.goods import *
 from app.admin.admin_base import MyModelView
-from app.libs.ossupload import uploadpdf
+from app.libs.ossupload import uploadpdf,uploadQrcode
+from app.libs.helper import createQrcodeWithurl
 from jinja2 import Markup
 from wtforms import fields, widgets
 from flask_admin.contrib.sqla.ajax import QueryAjaxModelLoader,DEFAULT_PAGE_SIZE
@@ -9,6 +10,10 @@ from flask_admin import Admin, form
 from wtforms.validators import ValidationError
 import operator
 from flask import request
+from app import get_app
+
+
+app = get_app()
 
 #分类
 class Light_CategoryAdmin(MyModelView):
@@ -43,7 +48,7 @@ class Light_CategoryAdmin(MyModelView):
 
     def __init__(self, session):
         # Just call parent class with predefined model.
-        super(Light_CategoryAdmin, self).__init__(Light_Category, session,name='照明分类管理')
+        super(Light_CategoryAdmin, self).__init__(Light_Category, session,name='分类管理')
 
 #其他分类
 class Ligh_Other_CategoryAdmin(MyModelView):
@@ -150,6 +155,7 @@ class Ligh_Spu_Admin(MyModelView):
         'other_categories',
         'specs',
         'pdfs',
+        'qrcode',
     ]
 
     column_labels = {
@@ -161,6 +167,7 @@ class Ligh_Spu_Admin(MyModelView):
         "spu_num":"灯饰编码",
         'specs':"拥有规格",
         'pdfs':"pdf说明书",
+        'qrcode':"二维码",
     }
 
     def _havepdf(view, context, model, name):
@@ -168,10 +175,19 @@ class Ligh_Spu_Admin(MyModelView):
             return 'NO'
         return 'YES'
 
-    column_formatters = {
-        'pdfs': _havepdf
-    }
+    def _listQrcode(view, context, model, name):
+        qrcodes = model.qrcode
+        qrcode = None
+        if qrcodes:
+            qrcode = qrcodes[0]
+        if not qrcode:
+            return ''
+        return Markup('<img src="%s" height="100" width="100">' % qrcode.path)
 
+    column_formatters = {
+        'pdfs': _havepdf,
+        'qrcode':_listQrcode
+    }
 
     form_columns = [
         'name',
@@ -180,6 +196,7 @@ class Ligh_Spu_Admin(MyModelView):
         'category',
         'other_categories',
         'specs' ,
+        'qrcode',
     ]
 
     column_searchable_list = [
@@ -187,16 +204,36 @@ class Ligh_Spu_Admin(MyModelView):
     ]
 
     inline_models = [InlineModelForm()]
+
+    def on_model_change(self, form, model, is_created):
+        spu = model
+        old_qrcode = spu.qrcode
+        if not old_qrcode:
+            spu_code = form.spu_num.data
+            domain = app.config['APP']['domain']
+            qrcode_url = domain + '?spu_num=' + spu_code
+            new_qrcode = Light_Spu_Qrcode()
+            qrcode_file = createQrcodeWithurl(qrcode_url)
+            path = uploadQrcode(qrcode_file)
+            new_qrcode.path = path
+            new_qrcode.spu = spu
+            db.session.add(new_qrcode)
+            db.session.commit()
+
+
     def __init__(self , session):
         # Just call parent class with predefined model.
-        super(Ligh_Spu_Admin , self).__init__(Light_Spu , session , name='spu管理')
+        super(Ligh_Spu_Admin , self).__init__(Light_Spu , session , name='产品管理(spu)')
 
 
 
-#pdf管理
+#二维码管理
 class Pdf_Statement_Admin(MyModelView):
     column_display_pk = False
     column_default_sort = ('id' , True)
+    can_edit = False
+    can_export = True
+    can_create = False
 
     column_list = [
         'time',
@@ -206,7 +243,7 @@ class Pdf_Statement_Admin(MyModelView):
 
     column_labels = {
         'time': '更新时间' ,
-        "path": "pdf路径",
+        "path": "二维码路径",
         'spu':'所属产品',
     }
 
@@ -241,6 +278,42 @@ class Pdf_Statement_Admin(MyModelView):
     def __init__(self , session):
         # Just call parent class with predefined model.
         super(Pdf_Statement_Admin , self).__init__(Light_Spu_Statement , session , name='pdf说明书管理')
+
+# 二维码管理
+class Qrcode_Statement_Admin(MyModelView):
+    column_display_pk = False
+    column_default_sort = ('id' , True)
+    can_edit = False
+    can_export = True
+    can_create = False
+
+    column_list = [
+        'time' ,
+        'spu' ,
+        'path' ,
+    ]
+
+    column_labels = {
+        'time': '更新时间' ,
+        "path": "pdf路径" ,
+        'spu': '所属产品' ,
+    }
+
+    form_columns = [
+        'time' ,
+        'spu' ,
+        'path' ,
+    ]
+
+    column_searchable_list = [
+        'spu.name'
+    ]
+    column_sortable_list = ['time']
+
+    def __init__(self , session):
+        # Just call parent class with predefined model.
+        super(Qrcode_Statement_Admin , self).__init__(Light_Spu_Qrcode , session , name='产品二维码管理')
+
 
 
 #内联 规格值显示
@@ -384,4 +457,4 @@ class Ligh_Sku_Admin(MyModelView):
 
     def __init__(self , session):
         # Just call parent class with predefined model.
-        super(Ligh_Sku_Admin , self).__init__(Light_Sku , session , name='sku管理')
+        super(Ligh_Sku_Admin , self).__init__(Light_Sku , session , name='不同规格产品管理(sku)')
