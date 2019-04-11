@@ -1,5 +1,6 @@
 from io import BytesIO
 import qrcode
+from flask import g,render_template
 
 def createQrcodeWithurl(url):
     qr = qrcode.QRCode(version=1 ,  # 二维码大小 1～40
@@ -14,3 +15,12 @@ def createQrcodeWithurl(url):
     img.save(byte_io , 'PNG')
     byte_io.seek(0)
     return byte_io
+
+
+'''
+统一渲染方法
+'''
+def ops_render( template,context = {} ):
+    if 'current_user' in g:
+        context['current_user'] = g.current_user
+    return render_template( template,**context )
