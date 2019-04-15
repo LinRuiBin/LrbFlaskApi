@@ -23,5 +23,5 @@ UPLOAD = {
 }
 
 APP = {
-    'domain':'http://lruibin.top:80/'
+    'domain':'https://lruibin.top/'
 }
