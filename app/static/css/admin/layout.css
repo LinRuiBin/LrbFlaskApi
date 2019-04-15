@@ -3,7 +3,7 @@ body {
 }
 
 #content {
-	padding: 15px 20px 30px 35px;
+	padding: 5px 20px 5px 5px;
 }
 
 #content .row {
@@ -70,4 +70,3 @@ a.dropdown-toggle b.caret {
 .user-name:hover{
 	color: #cccccc;
 }
-
