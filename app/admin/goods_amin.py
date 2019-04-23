@@ -46,9 +46,9 @@ class Light_CategoryAdmin(MyModelView):
         'name','code',
     ]
 
-    def __init__(self, session):
+    def __init__(self, session,category=None):
         # Just call parent class with predefined model.
-        super(Light_CategoryAdmin, self).__init__(Light_Category, session,name='分类管理')
+        super(Light_CategoryAdmin, self).__init__(Light_Category, session,name='分类管理',category=category)
 
 #其他分类
 class Ligh_Other_CategoryAdmin(MyModelView):
@@ -82,9 +82,9 @@ class Ligh_Other_CategoryAdmin(MyModelView):
         'name','code',
     ]
 
-    def __init__(self, session):
+    def __init__(self, session,category=None):
         # Just call parent class with predefined model.
-        super(Ligh_Other_CategoryAdmin, self).__init__(Light_other_Category, session,name='其他分类管理')
+        super(Ligh_Other_CategoryAdmin, self).__init__(Light_other_Category, session,name='其他分类管理',category=category)
 
 
 #中间表 产品-分类
@@ -103,12 +103,12 @@ class Ligh_Spu_Other_CategoryAdmin(MyModelView):
 
     column_labels = {
      'other_category_name':'分类',
-     'spu_name':'灯饰',
+     'spu_name':'产品',
     }
 
-    def __init__(self, session):
+    def __init__(self, session,category=None):
         # Just call parent class with predefined model.
-        super(Ligh_Spu_Other_CategoryAdmin, self).__init__(Light_Spu_category, session,name='灯饰-其他分类对应关系')
+        super(Ligh_Spu_Other_CategoryAdmin, self).__init__(Light_Spu_category, session,name='产品-其他分类对应关系',category=category)
 
 
 # 内联pdf显示格式
@@ -155,19 +155,23 @@ class Ligh_Spu_Admin(MyModelView):
         'other_categories',
         'specs',
         'pdfs',
+        'auto_qr',
         'qrcode',
     ]
 
     column_labels = {
-        'name': '灯饰名称' ,
+        'name': '名称' ,
         'spu_name': '编码' ,
         'desc':"描述",
-        "category":"照明分类",
+        "category":"分类",
         "other_categories":"其他分类",
-        "spu_num":"灯饰编码",
+        "spu_num":"编码",
         'specs':"拥有规格",
         'pdfs':"pdf说明书",
+        'auto_qr':'是否生成二维码',
         'qrcode':"二维码",
+        'category.name':'分类名称',
+        'other_categories.name':'其他分类名称',
     }
 
     def _havepdf(view, context, model, name):
@@ -184,9 +188,16 @@ class Ligh_Spu_Admin(MyModelView):
             return ''
         return Markup('<img src="%s" height="100" width="100">' % qrcode.path)
 
+
+    def _automakeQrcode(view, context, model, name):
+        if model.qrcode == True:
+            return 'YES'
+        return 'NO'
+
     column_formatters = {
         'pdfs': _havepdf,
-        'qrcode':_listQrcode
+        'qrcode':_listQrcode,
+        'auto_qr': _automakeQrcode,
     }
 
     form_columns = [
@@ -197,15 +208,19 @@ class Ligh_Spu_Admin(MyModelView):
         'other_categories',
         'specs' ,
         'qrcode',
+        'auto_qr',
     ]
 
     column_searchable_list = [
         'name' , 'spu_num','category.name','other_categories.name',
     ]
+    column_filters = ['name', 'spu_num', 'category.name', 'other_categories.name']
 
     inline_models = [InlineModelForm()]
 
     def on_model_change(self, form, model, is_created):
+        if form.auto_qr.data == False:
+            return
         spu = model
         old_qrcode = spu.qrcode
         if not old_qrcode:
@@ -221,9 +236,9 @@ class Ligh_Spu_Admin(MyModelView):
             db.session.commit()
 
 
-    def __init__(self , session):
+    def __init__(self , session ,category=None):
         # Just call parent class with predefined model.
-        super(Ligh_Spu_Admin , self).__init__(Light_Spu , session , name='产品管理(spu)')
+        super(Ligh_Spu_Admin , self).__init__(Light_Spu , session , name='产品管理(spu)',category=category)
 
 
 
@@ -243,8 +258,9 @@ class Pdf_Statement_Admin(MyModelView):
 
     column_labels = {
         'time': '更新时间' ,
-        "path": "二维码路径",
+        "path": "pdf路径",
         'spu':'所属产品',
+        'spu.name':'产品名称(spu)',
     }
 
     form_columns = [
@@ -258,7 +274,7 @@ class Pdf_Statement_Admin(MyModelView):
     ]
 
     column_sortable_list = ['time']
-
+    column_filters = ['spu.name']
 
     form_extra_fields = {
         'path': fields.FileField('PDF')
@@ -275,9 +291,10 @@ class Pdf_Statement_Admin(MyModelView):
             url = uploadpdf(file_data)
             model.path = url
 
-    def __init__(self , session):
+    def __init__(self , session,category=None):
         # Just call parent class with predefined model.
-        super(Pdf_Statement_Admin , self).__init__(Light_Spu_Statement , session , name='pdf说明书管理')
+        super(Pdf_Statement_Admin , self).__init__(Light_Spu_Statement , session , name='PDF说明书管理',category=category)
+
 
 # 二维码管理
 class Qrcode_Statement_Admin(MyModelView):
@@ -295,8 +312,9 @@ class Qrcode_Statement_Admin(MyModelView):
 
     column_labels = {
         'time': '更新时间' ,
-        "path": "pdf路径" ,
+        "path": "二维码路径" ,
         'spu': '所属产品' ,
+        'spu.name':'产品(spu)名称',
     }
 
     form_columns = [
@@ -310,10 +328,11 @@ class Qrcode_Statement_Admin(MyModelView):
     ]
     column_sortable_list = ['time']
 
-    def __init__(self , session):
-        # Just call parent class with predefined model.
-        super(Qrcode_Statement_Admin , self).__init__(Light_Spu_Qrcode , session , name='产品二维码管理')
+    column_filters = ['spu.name']
 
+    def __init__(self , session,category=None):
+        # Just call parent class with predefined model.
+        super(Qrcode_Statement_Admin , self).__init__(Light_Spu_Qrcode , session , name='产品二维码管理',category=category)
 
 
 #内联 规格值显示
@@ -353,9 +372,9 @@ class Ligh_Spec_Admin(MyModelView):
     ]
 
 
-    def __init__(self , session):
+    def __init__(self , session,category=None):
         # Just call parent class with predefined model.
-        super(Ligh_Spec_Admin , self).__init__(Light_Spec , session , name='规格种类管理')
+        super(Ligh_Spec_Admin , self).__init__(Light_Spec , session , name='规格种类管理',category=category)
 
 #规格值
 class Ligh_Spec_value_Admin(MyModelView):
@@ -370,6 +389,7 @@ class Ligh_Spec_value_Admin(MyModelView):
     column_labels = {
         'spec_value': '规格具体值' ,
         "spec": "所属规格" ,
+        'spec.spec_name': '规格名称',
     }
 
     form_columns = [
@@ -380,11 +400,12 @@ class Ligh_Spec_value_Admin(MyModelView):
     column_searchable_list = [
         'spec_value' , 'spec.spec_name'
     ]
+    column_filters = ['spec_value' , 'spec.spec_name']
 
 
-    def __init__(self , session):
+    def __init__(self , session,category=None):
         # Just call parent class with predefined model.
-        super(Ligh_Spec_value_Admin , self).__init__(Light_Spec_Value , session , name='规格具体值管理')
+        super(Ligh_Spec_value_Admin , self).__init__(Light_Spec_Value , session , name='规格具体值管理',category=category)
 
 
 #无效 ajax外健
@@ -406,15 +427,18 @@ class Ligh_Sku_Admin(MyModelView):
         'stock',
         'spu',
         'spec_values',
+        'spu.specs',
     ]
 
     column_labels = {
         'sku_num': 'sku编码' ,
-        'sku_name': 'sku名字' ,
+        'sku_name': 'sku名称' ,
         'price':'价格',
         'stock':'库存',
         'spu':'所属spu',
-        'spec_values':'规格id',
+        'spec_values':'规格值',
+        'spu.specs':'拥有规格种类',
+        'spu.name': 'spu名称',
     }
 
     form_columns = [
@@ -429,7 +453,7 @@ class Ligh_Sku_Admin(MyModelView):
     column_searchable_list = [
         'sku_num' , 'sku_name','spu.name',
     ]
-
+    column_filters = ['sku_num', 'sku_name','spu.name','stock',]
     form_ajax_refs = {'spec_values':spec_valuesAjaxModelLoader('spec_values', db.session,Light_sku_spec,fields=['spec_value'])}
 
     def on_model_change(self, form, model, is_created):
@@ -455,6 +479,9 @@ class Ligh_Sku_Admin(MyModelView):
         if not operator.eq(all_spec_id , selected_spec_id):
             raise ValidationError(message='规格值选择不正确')
 
-    def __init__(self , session):
+        if not model.sku_name:
+            model.sku_name = spu.name
+
+    def __init__(self , session,category=None):
         # Just call parent class with predefined model.
-        super(Ligh_Sku_Admin , self).__init__(Light_Sku , session , name='不同规格产品管理(sku)')
+        super(Ligh_Sku_Admin , self).__init__(Light_Sku , session , name='多规格产品管理(sku)',category=category)

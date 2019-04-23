@@ -52,6 +52,7 @@ class Base(db.Model):
     __abstract__ = True
     create_time = Column(Integer)
     status = Column(SmallInteger, default=1)
+    update_time =  Column(db.DateTime , default=datetime.now , onupdate=datetime.now)
 
     def __init__(self):
         self.create_time = int(datetime.now().timestamp())

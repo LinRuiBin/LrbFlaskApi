@@ -79,6 +79,9 @@ class User(Base):
     def __init__(self):
         self.fields = ['id', 'email', 'nickname','avatar','gender']
 
+    def __str__(self):
+        return "{}".format(self.nickname)
+
 
 
 class OauthMemberBind(Base):
