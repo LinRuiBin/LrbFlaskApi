@@ -50,12 +50,14 @@ db = SQLAlchemy(query_class=Query)
 
 class Base(db.Model):
     __abstract__ = True
-    create_time = Column(Integer)
+    create_time = Column(db.DateTime, default=datetime.now)
     status = Column(SmallInteger, default=1)
-    update_time =  Column(db.DateTime , default=datetime.now , onupdate=datetime.now)
+    update_time = Column(db.DateTime , default=datetime.now , onupdate=datetime.now)
 
     def __init__(self):
-        self.create_time = int(datetime.now().timestamp())
+        pass
+        # self.create_time = datetime.now()
+        # self.create_time = int(datetime.now().timestamp())
 
     def __getitem__(self, item):
         return getattr(self, item)

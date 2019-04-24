@@ -13,7 +13,7 @@ from app import create_app
 from flask_migrate import Migrate,MigrateCommand
 from app.models.base import db
 # 必须导入需要更新的模型
-from app.models import user, goods, adress,shopCart
+from app.models import base,user, goods, adress,shopCart,order
 
 app = create_app()
 manager = Manager(app)

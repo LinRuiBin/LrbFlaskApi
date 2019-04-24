@@ -9,20 +9,24 @@ from datetime import datetime
 #收货地址
 class Adress(Base):
     __tablename__ = 'adress'
+    __table_args__ = (
+        db.Index('idx_user_id_status', 'user_id', 'status'),
+    )
 
     id = db.Column(db.Integer , primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship(User, backref=db.backref("adresses"))
 
-    nickname = db.Column(db.String(20), nullable=False, server_default=db.FetchedValue())
-    mobile = db.Column(db.String(11), nullable=False, server_default=db.FetchedValue())
-    province_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
-    province_str = db.Column(db.String(50), nullable=False, server_default=db.FetchedValue())
-    city_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
-    city_str = db.Column(db.String(50), nullable=False, server_default=db.FetchedValue())
-    area_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
-    area_str = db.Column(db.String(50), nullable=False, server_default=db.FetchedValue())
-    address = db.Column(db.String(100), nullable=False, server_default=db.FetchedValue())
+    nickname = db.Column(db.String(20), nullable=False)
+    mobile = db.Column(db.String(11), nullable=False)
+    province_id = db.Column(db.Integer, nullable=False)
+    province_str = db.Column(db.String(50), nullable=False)
+    city_id = db.Column(db.Integer, nullable=False)
+    city_str = db.Column(db.String(50), nullable=False)
+    area_id = db.Column(db.Integer, nullable=False)
+    area_str = db.Column(db.String(50), nullable=False)
+    address = db.Column(db.String(100), nullable=False)
+    addr_status = db.Column(db.Integer, nullable=False)
     is_default = db.Column(db.Integer, nullable=False,default=0)
 
 
