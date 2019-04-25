@@ -4,6 +4,7 @@ from flask import request,jsonify,json,abort
 
 from app.libs.helper import ops_render
 import subprocess
+import os
 
 web_route = Blueprint('web', __name__)
 
@@ -16,8 +17,8 @@ def index():
 @web_route.route("/githook",methods = [ "GET","POST" ])
 def githook():
     if request.method == "POST":
-
-        retcode = subprocess.call("cd /home/FlaskProject/LrbFlaskApi && git checkout . && git pull")
+        # retcode = subprocess.call("cd /home/FlaskProject/LrbFlaskApi && git checkout . && git pull")
+        retcode = os.system("cd /home/FlaskProject/LrbFlaskApi && git checkout . && git pull")
         if retcode == 0:
             return jsonify({"status":"success"},200)
         else:
