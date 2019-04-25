@@ -12,6 +12,7 @@ __author__ = 'LRB'
 from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy, BaseQuery
+from sqlalchemy.ext.associationproxy import _AssociationList
 from sqlalchemy import inspect, Column, Integer, SmallInteger, orm
 from contextlib import contextmanager
 
@@ -48,6 +49,7 @@ class Query(BaseQuery):
 
 db = SQLAlchemy(query_class=Query)
 
+
 class Base(db.Model):
     __abstract__ = True
     create_time = Column(db.DateTime, default=datetime.now)
@@ -60,6 +62,9 @@ class Base(db.Model):
         # self.create_time = int(datetime.now().timestamp())
 
     def __getitem__(self, item):
+        attr = getattr(self, item)
+        if len(self.fields)>0 and isinstance(attr, _AssociationList):
+            return list(attr)
         return getattr(self, item)
 
     @property
@@ -126,4 +131,7 @@ class MixinJSONSerializer:
         return self._fields
 
     def __getitem__(self, key):
+        attr = getattr(self, key)
+        if len(self._fields) > 0 and isinstance(attr, _AssociationList):
+            return list(attr)
         return getattr(self, key)

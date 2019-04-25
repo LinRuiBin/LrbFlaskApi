@@ -16,7 +16,7 @@ __author__ = 'LRB'
 api = Redprint('user')
 
 @api.route('/<int:uid>', methods=['GET'])
-# @auth.login_required
+@auth.login_required
 def super_get_user(uid):
     """
     管理源获取指定用户信息

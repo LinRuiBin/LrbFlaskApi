@@ -16,6 +16,10 @@ class Light_Category(Base):
     def __str__(self):
         return "{}".format(self.name)
 
+    @orm.reconstructor
+    def __init__(self):
+        self.fields = ['id', 'name', 'code', 'desc',]
+
 #灯其他分类  多对多
 class Light_other_Category(Base):
     __tablename__ = 'light_other_category'
@@ -23,6 +27,10 @@ class Light_other_Category(Base):
     name = Column(db.String(50) , nullable=False)
     code = Column(db.String(20),unique=True)  #分类编码
     desc = Column(db.String(50), nullable=True)
+
+    @orm.reconstructor
+    def __init__(self):
+        self.fields = ['id', 'name', 'code', 'desc',]
 
     def __str__(self):
         return "{}".format(self.name)
@@ -43,7 +51,6 @@ class Light_Spu_category(db.Model):
         self.other_category = light_other_category
         self.light_spu = light_spu
 
-
 #灯spu
 class Light_Spu(Base):
     __tablename__ = 'light_spu'
@@ -56,6 +63,10 @@ class Light_Spu(Base):
     other_categories = association_proxy("spu_other_categorys",'other_category')
     specs = association_proxy('spu_specs','spec')
     auto_qr = Column(db.Boolean,default=False)
+
+    @orm.reconstructor
+    def __init__(self):
+        self.fields = ['id', 'name', 'spu_num', 'desc','category','other_categories','spu_skus',]
 
     def __str__(self):
         return "{}".format(self.name)
@@ -70,6 +81,10 @@ class Light_Spu_Qrcode(Base):
     spu_id = Column(db.Integer, db.ForeignKey('light_spu.id'))
     spu = db.relationship(Light_Spu , backref='qrcode',uselist=False)
 
+    @orm.reconstructor
+    def __init__(self):
+        self.fields = ['id', 'path','time']
+
 
 #产品说明书 pdf
 class Light_Spu_Statement(Base):
@@ -79,6 +94,10 @@ class Light_Spu_Statement(Base):
     path = Column(db.String(100))
     spu_id = Column(db.Integer,db.ForeignKey('light_spu.id'))
     spu = db.relationship(Light_Spu , backref='pdfs')
+
+    @orm.reconstructor
+    def __init__(self):
+        self.fields = ['id', 'path','time']
 
 
 #规格表
@@ -91,6 +110,10 @@ class Light_Spec(Base):
     def __str__(self):
         return "{}".format(self.spec_name)
 
+    @orm.reconstructor
+    def __init__(self):
+        self.fields = ['id', 'spec_num', 'spec_name']
+
 
 #规格值表
 class Light_Spec_Value(Base):
@@ -102,6 +125,10 @@ class Light_Spec_Value(Base):
 
     def __str__(self):
         return "{}".format(self.spec_value)
+
+    @orm.reconstructor
+    def __init__(self):
+        self.fields = ['spec','id', 'spec_value']
 
 
 #spu-规格表
@@ -134,6 +161,10 @@ class Light_Sku(Base):
 
     def __str__(self):
         return "{}".format(self.sku_name)
+
+    @orm.reconstructor
+    def __init__(self):
+        self.fields = ['id', 'sku_num','sku_name','price','stock','spec_values']
     # spec_value_names = association_proxy('sku_specs','spec_value_name')
 
 #sku-spec对应表
