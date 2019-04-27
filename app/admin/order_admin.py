@@ -24,6 +24,7 @@ class Order_admin(MyModelView):
         'pay_time',
         'create_time',
         'update_time',
+        'orderItems',
     ]
 
     column_labels = {
@@ -45,6 +46,7 @@ class Order_admin(MyModelView):
      'create_time':'创建时间',
      'update_time':'更新时间',
      'note':'备注',
+     'orderItems':'订单商品',
     }
 
     form_columns = [
@@ -75,3 +77,54 @@ class Order_admin(MyModelView):
     def __init__(self, session,category=None):
         # Just call parent class with predefined model.
         super(Order_admin, self).__init__(PayOrder, session,name='订单管理',category=category)
+
+
+#订单商品管理
+class Order_item_admin(MyModelView):
+
+    column_display_pk = True
+    column_default_sort = ('id',True)
+    can_delete = False
+
+    column_list = [
+        'id',
+        'pay_order.order_sn',
+        'user',
+        'sku',
+        'quantity',
+        'price',
+    ]
+
+    column_labels = {
+        'id': 'id',
+        'pay_order':'所属订单',
+        'user': '用户',
+        'pay_order.order_sn':'订单号',
+        'user.nickname':'用户名',
+        'sku': '商品',
+        'quantity':'数量',
+        'price': "价格",
+        'note': '备注',
+    }
+
+    form_columns = [
+        'pay_order',
+        'user',
+        'sku',
+        'quantity',
+        'price',
+        'note',
+    ]
+
+    column_searchable_list = [
+        'user.nickname', 'pay_order.order_sn',
+    ]
+
+    column_filters = [
+        'user.nickname', 'pay_order.order_sn',
+    ]
+
+    def __init__(self, session, category=None):
+        # Just call parent class with predefined model.
+        super(Order_item_admin, self).__init__(OrderItem, session, name='订单商品管理', category=category)
+

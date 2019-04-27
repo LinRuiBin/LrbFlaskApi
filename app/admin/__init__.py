@@ -28,3 +28,4 @@ def init_admin(app):
     fadmin.add_view(Adress_admin(db.session))
     fadmin.add_view(ShopCart_admin(db.session))
     fadmin.add_view(Order_admin(db.session))
+    fadmin.add_view(Order_item_admin(db.session))
