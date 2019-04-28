@@ -72,11 +72,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="web.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="web.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/web/web.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="12" lean-forward="true" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+            <state relative-caret-position="391">
+              <caret line="23" column="7" lean-forward="false" selection-start-line="23" selection-start-column="7" selection-end-line="24" selection-end-column="47" />
               <folding>
                 <element signature="e#1#28#0" expanded="true" />
               </folding>
@@ -84,11 +84,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="goods.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="goods.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/api/v1/goods.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="37" lean-forward="false" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
+            <state relative-caret-position="136">
+              <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
               </folding>
@@ -234,8 +234,8 @@
         <option value="$PROJECT_DIR$/app/admin/goods_amin.py" />
         <option value="$PROJECT_DIR$/app/admin/sku_admin.py" />
         <option value="$PROJECT_DIR$/app/admin/__init__.py" />
-        <option value="$PROJECT_DIR$/app/web/web.py" />
         <option value="$PROJECT_DIR$/app/api/v1/goods.py" />
+        <option value="$PROJECT_DIR$/app/web/web.py" />
       </list>
     </option>
   </component>
@@ -253,8 +253,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="683" />
-    <option name="y" value="79" />
+    <option name="x" value="825" />
+    <option name="y" value="30" />
     <option name="width" value="1717" />
     <option name="height" value="1003" />
   </component>
@@ -644,7 +644,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="683" y="79" width="1717" height="1003" extended-state="0" />
+    <frame x="825" y="30" width="1717" height="1003" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21492538" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1102,22 +1102,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/web/web.py">
+    <entry file="file://$PROJECT_DIR$/app/api/v1/goods.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="12" lean-forward="true" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+        <state relative-caret-position="136">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding>
-            <element signature="e#1#28#0" expanded="true" />
+            <element signature="e#0#34#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/api/v1/goods.py">
+    <entry file="file://$PROJECT_DIR$/app/web/web.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="37" lean-forward="false" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
+        <state relative-caret-position="391">
+          <caret line="23" column="7" lean-forward="false" selection-start-line="23" selection-start-column="7" selection-end-line="24" selection-end-column="47" />
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#1#28#0" expanded="true" />
           </folding>
         </state>
       </provider>
