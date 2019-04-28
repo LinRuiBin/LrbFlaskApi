@@ -17,9 +17,9 @@ class PayOrder(Base):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship(User, backref=db.backref("orders"))
 
-    total_price = db.Column(db.Numeric(10, 2), nullable=False)
-    yun_price = db.Column(db.Numeric(10, 2), nullable=False)
-    pay_price = db.Column(db.Numeric(10, 2), nullable=False)
+    total_price = db.Column(db.Float, nullable=False)
+    yun_price = db.Column(db.Float, nullable=False)
+    pay_price = db.Column(db.Float, nullable=False)
     pay_sn = db.Column(db.String(128), nullable=False)
     prepay_id = db.Column(db.String(128), nullable=False)
     note = db.Column(db.Text, nullable=False)
@@ -64,7 +64,7 @@ class PayOrder(Base):
 
     @orm.reconstructor
     def __init__(self):
-        self.fields = ['id', 'order_sn', 'total_price','total_price','yun_price','pay_price','note','order_status','pay_time']
+        self.fields = ['id', 'order_sn','note','order_status','pay_time','total_price','yun_price','pay_price',]
 
 
 #订单商品

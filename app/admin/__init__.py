@@ -6,9 +6,12 @@ from app.admin.admin_base import MyAdminIndexView
 from app.admin.user_admin import UserAdmin,Assit_UserAdmin
 
 from app.admin.goods_amin import *
+from app.admin.sku_admin import *
+from app.admin.category_admin import *
 from app.admin.adress_admin import *
 from app.admin.shopCart_admin import *
 from app.admin.order_admin import *
+
 
 def init_admin(app):
     admin_base.init_login(app)

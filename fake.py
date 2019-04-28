@@ -15,6 +15,6 @@ with app.app_context():
         user = User()
         user.nickname = 'Super'
         user.password = '123456'
-        user.email = '999@qq.com'
+        user.email = '18675079557@163.com'
         user.auth = 2
         db.session.add(user)

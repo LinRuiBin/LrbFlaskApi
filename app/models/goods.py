@@ -9,6 +9,10 @@ from datetime import datetime
 class Light_Category(Base):
     __tablename__ = 'light_category'
     id = Column(db.Integer , primary_key=True , autoincrement=True)
+    par_id = db.Column(db.Integer , db.ForeignKey('light_category.id'))
+    par_cat = db.relationship('Light_Category',backref=db.backref("sub_cats"),remote_side=[id])
+    level = Column(db.Integer, nullable = False, default = 0) #分类层级 0代表根分类
+    is_leaf = Column(db.Boolean,default=False) #是否子节点
     name = Column(db.String(50) , nullable=False)
     code = Column(db.String(20),unique=True)  #分类编码
     desc = Column(db.String(50), nullable=True)
@@ -18,7 +22,7 @@ class Light_Category(Base):
 
     @orm.reconstructor
     def __init__(self):
-        self.fields = ['id', 'name', 'code', 'desc',]
+        self.fields = ['id', 'name', 'code', 'desc','level','is_leaf']
 
 #灯其他分类  多对多
 class Light_other_Category(Base):

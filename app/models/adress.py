@@ -26,9 +26,12 @@ class Adress(Base):
     area_id = db.Column(db.Integer, nullable=False)
     area_str = db.Column(db.String(50), nullable=False)
     address = db.Column(db.String(100), nullable=False)
-    addr_status = db.Column(db.Integer, nullable=False)
+    addr_status = db.Column(db.Integer, nullable=True)
     is_default = db.Column(db.Integer, nullable=False,default=0)
 
+    @orm.reconstructor
+    def __init__(self):
+        self.fields = ['id', 'nickname', 'mobile', 'province_str', 'city_str','area_str','address']
 
     def __str__(self):
         return "{}{}{}{}".format(self.province_str,self.city_str,self.area_str,self.address)

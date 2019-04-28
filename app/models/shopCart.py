@@ -13,3 +13,10 @@ class ShopCart(Base):
     sku_id = db.Column(db.Integer, db.ForeignKey('light_sku.id'), nullable=False)
     sku = db.relationship(Light_Sku)
     quantity = db.Column(db.Integer, nullable=False)
+
+    @orm.reconstructor
+    def __init__(self):
+        self.fields = ['id', 'sku', 'quantity']
+
+    def __str__(self):
+        return "{}*{}".format(self.sku.sku_name,self.quantity)
