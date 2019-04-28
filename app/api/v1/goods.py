@@ -12,7 +12,7 @@ api = Redprint('goods')
 def getIndexGoods():
 
     spus = Light_Spu.query.all()
-    return SuccessReponse(msg='获取成功11',data=spus)
+    return SuccessReponse(msg='获取成功13',data=spus)
 
 
 
