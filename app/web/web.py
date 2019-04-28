@@ -19,6 +19,6 @@ def githook():
     if request.method == "POST":
         # retcode = subprocess.call("cd /home/FlaskProject/LrbFlaskApi && git checkout . && git pull")
         os.system("cd /home/FlaskProject/LrbFlaskApi && git checkout . && git pull")
-        arg = 'restart'
+        arg = ' restart'
         os.system('./uwsgiServer.sh' + arg)
         return jsonify({"status":"success"},200)

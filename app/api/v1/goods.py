@@ -9,9 +9,6 @@ api = Redprint('goods')
 
 
 @api.route('/', methods=['GET'])
-
-
-
 def getIndexGoods():
 
     spus = Light_Spu.query.all()
