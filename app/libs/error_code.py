@@ -92,3 +92,9 @@ class RegisteredException(APIException):
     code = 400
     status = 2002
     msg = 'user have been register'
+
+
+class NotRegisteredException(APIException):
+    code = 400
+    status = 2002
+    msg = 'user have not been register'

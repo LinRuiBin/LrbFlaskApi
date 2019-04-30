@@ -22,7 +22,7 @@ class Light_Category(Base):
 
     @orm.reconstructor
     def __init__(self):
-        self.fields = ['id', 'name', 'code', 'desc','level','is_leaf']
+        self.fields = ['id', 'name', 'code', 'desc',]
 
 #灯其他分类  多对多
 class Light_other_Category(Base):

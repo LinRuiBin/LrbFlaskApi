@@ -9,7 +9,7 @@ from app.libs.enums import ClientTypeEnum
 from app.models.user import User
 from app.validators.base import BaseForm as Form
 from app.models.base import db
-from app.libs.error_code import RegisteredException
+from app.libs.error_code import RegisteredException,NotRegisteredException
 __author__ = 'LRB'
 
 
@@ -30,9 +30,32 @@ class ClientForm(Form):
         self.type.data = client
 
     def validate_account(self, value):
-        user = User.query.filter_by(emial=value).first()
+        user = User.query.filter_by(email=value.data).first()
         if user:
             raise RegisteredException()
+
+
+
+class EmailLoginForm(Form):
+    account = StringField(validators=[DataRequired(message='不允许为空'), length(
+        min=5, max=32
+    )])
+    secret = StringField()
+    type = IntegerField(validators=[DataRequired()])
+
+    def validate_type(self, value):
+        try:
+            if (isinstance(value.data, str)):
+                value.data = int(value.data)
+            client = ClientTypeEnum(int(value.data))
+        except ValueError as e:
+            raise e
+        self.type.data = client
+
+    def validate_account(self, value):
+        user = User.query.filter_by(email=value.data).first()
+        if not user:
+            raise NotRegisteredException()
 
 
 

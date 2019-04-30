@@ -8,7 +8,7 @@ from app.libs.enums import ClientTypeEnum
 from app.libs.error_code import AuthFailed,NodataReponse,SuccessReponse
 from app.libs.redprint import Redprint
 from app.models.user import User,OauthMemberBind
-from app.validators.forms import ClientForm, TokenForm,WxClientForm
+from app.validators.forms import ClientForm, TokenForm,WxClientForm,EmailLoginForm
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired, \
     BadSignature
 
@@ -18,7 +18,7 @@ __author__ = 'LRB'
 
 @api.route('', methods=['POST'])
 def get_token():
-    form = ClientForm().validate_for_api()
+    form = EmailLoginForm().validate_for_api()
     promise = {
         ClientTypeEnum.USER_EMAIL: User.verify,
     }

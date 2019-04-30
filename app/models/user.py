@@ -65,6 +65,7 @@ class User(Base):
             scope = 'AssistAdminScope'
         else:
             scope = 'UserScope'
+        return scope
 
     @property
     def scope(self):

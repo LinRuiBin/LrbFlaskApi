@@ -83,6 +83,11 @@ class Ligh_Spec_value_Admin(MyModelView):
 
 #无效 ajax外健
 class spec_valuesAjaxModelLoader(QueryAjaxModelLoader):
+    def __init__(self, name, session, model, **options):
+        super(spec_valuesAjaxModelLoader, self).__init__(name, session, model, **options)
+        self.model = model
+        self.session = session
+
     def get_list(self , term , offset=0 , limit=10):
         query = self.session.query(self.model).filter_by(mid=term)
         return query.offset(offset).limit(limit).all()
@@ -127,7 +132,7 @@ class Ligh_Sku_Admin(MyModelView):
         'sku_num' , 'sku_name','spu.name',
     ]
     column_filters = ['sku_num', 'sku_name','spu.name','stock',]
-    form_ajax_refs = {'spec_values':spec_valuesAjaxModelLoader('spec_values', db.session,Light_sku_spec,fields=['spec_value'])}
+    # form_ajax_refs = {'spec_values':spec_valuesAjaxModelLoader('spec_values', db.session,Light_Spec_Value,fields=['spec_value'])}
 
     def on_model_change(self, form, model, is_created):
         spu = form.spu.data
