@@ -18,20 +18,20 @@ class PayOrder(Base):
     user = db.relationship(User, backref=db.backref("orders"))
 
     total_price = db.Column(db.Float, nullable=False)
-    yun_price = db.Column(db.Float, nullable=False)
+    yun_price = db.Column(db.Float,default=0)
     pay_price = db.Column(db.Float, nullable=False)
-    pay_sn = db.Column(db.String(128), nullable=False)
-    prepay_id = db.Column(db.String(128), nullable=False)
-    note = db.Column(db.Text, nullable=False)
+    pay_sn = db.Column(db.String(128))
+    prepay_id = db.Column(db.String(128))
+    note = db.Column(db.Text)
     order_status = db.Column(db.Integer, nullable=False)
 
     express_address_id = db.Column(db.Integer, db.ForeignKey('adress.id'), nullable=False)
     express_address = db.relationship(Adress)
-    express_status = db.Column(db.Integer, nullable=False)
-    express_info = db.Column(db.String(100), nullable=False)
+    express_status = db.Column(db.Integer)
+    express_info = db.Column(db.String(100))
 
-    comment_status = db.Column(db.Integer, nullable=False)
-    pay_time = db.Column(db.DateTime, nullable=False)
+    comment_status = db.Column(db.Integer)
+    pay_time = db.Column(db.DateTime)
     # update_time = db.Column(db.DateTime, nullable=False, server_default=db.FetchedValue())
     # create_time = db.Column(db.DateTime, nullable=False, server_default=db.FetchedValue())
 
@@ -82,7 +82,7 @@ class OrderItem(Base):
     sku_id = db.Column(db.Integer, db.ForeignKey('light_sku.id'), nullable=False)
     sku = db.relationship(Light_Sku)
     quantity = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
-    price = db.Column(db.Numeric(10, 2), nullable=False, server_default=db.FetchedValue())
+    price = db.Column(db.Float, nullable=False, server_default=db.FetchedValue())
     note = db.Column(db.Text)
 
     def __str__(self):
@@ -91,3 +91,12 @@ class OrderItem(Base):
     @orm.reconstructor
     def __init__(self):
         self.fields = ['id', 'sku', 'quantity','price','note']
+
+
+
+class OauthAccessToken(Base):
+    __tablename__ = 'oauth_access_token'
+
+    id = db.Column(db.Integer, primary_key=True)
+    access_token = db.Column(db.String(600), nullable=False)
+    expired_time = db.Column(db.DateTime, nullable=False, index=True)

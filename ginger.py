@@ -4,7 +4,7 @@
 from werkzeug.exceptions import HTTPException
 from app import create_app  #创建app
 
-from app.libs.error import APIException
+from app.libs.error import APIException,APIResponse
 from app.libs.error_code import ServerError
 from flask_script import Manager
 
@@ -15,6 +15,8 @@ manager = Manager(app)
 @app.errorhandler(Exception)
 def framework_error(e):
     if isinstance(e, APIException):
+        return e
+    if isinstance(e,APIResponse):
         return e
     if isinstance(e, HTTPException):
         code = e.code
