@@ -13,7 +13,7 @@ def register_blueprints(app):
 # 插件初始化
 def register_plugin(app):
     create_apidoc(app)
-    create_dbdata(app)
+    # create_dbdata(app)  #在创建app的时候注册db 这里不用
     create_admin(app)
     createUserManager(app)
 
