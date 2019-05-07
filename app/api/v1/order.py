@@ -10,9 +10,7 @@ from app.models.adress import Adress
 from app.models.base import *
 from app.service.PayService import *
 from app.service.WeChatService import *
-from app import get_app
-
-app = get_app()
+from app import app
 
 api = Redprint('order')
 

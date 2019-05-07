@@ -4,8 +4,7 @@ from flask import request,jsonify,json
 import re
 import oss2
 
-from app import get_app
-app = get_app()
+from app import app
 
 route_upload = Blueprint('upload_page', __name__)
 

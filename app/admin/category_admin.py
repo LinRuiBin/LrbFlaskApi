@@ -7,11 +7,7 @@ from flask_admin import Admin, form
 from wtforms.validators import ValidationError
 import operator
 from flask import request
-from app import get_app
-
-
-app = get_app()
-
+from app import app
 
 #内连子分类
 class CategoryInlineModelForm(InlineFormAdmin):

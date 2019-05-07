@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 import hashlib,requests,uuid,json,datetime
 import xml.etree.ElementTree as ET
-from app import get_app
+from app import app
 from app.models.base import Base,db
 from app.models.order import OauthAccessToken
 from app.libs.helper import getCurrentDate
-
-app = get_app()
 
 class WeChatService():
 

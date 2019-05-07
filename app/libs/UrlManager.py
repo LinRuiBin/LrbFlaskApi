@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
-from app import get_app
-app = get_app()
+from app import app
+
 class UrlManager(object):
     def __init__(self):
         pass

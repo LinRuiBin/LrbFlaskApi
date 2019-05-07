@@ -12,7 +12,7 @@ from app.models.user import User,OauthMemberBind
 from app.validators.forms import ClientForm, UserEmailForm,WxClientForm
 from app.libs.enums import ClientTypeEnum
 from werkzeug.exceptions import HTTPException
-from app import get_app
+from app import app
 from app.models.base import db
 from app.api.v1.token import generate_auth_token
 from flask import current_app
@@ -20,7 +20,6 @@ from flask import current_app
 __author__ = 'LRB'
 
 api = Redprint('client')
-app = current_app
 
 @api.route('/register', methods=['POST'])
 def create_client():

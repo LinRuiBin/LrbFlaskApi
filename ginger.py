@@ -2,14 +2,14 @@
  Created by LRB on 2018/5/7.
 """
 from werkzeug.exceptions import HTTPException
-from app import create_app  #创建app
-
+from app import app  #创建app
+import app_register
 from app.libs.error import APIException,APIResponse
 from app.libs.error_code import ServerError
 from flask_script import Manager
 
 __author__ = 'LRB'
-app = create_app()
+
 manager = Manager(app)
 
 @app.errorhandler(Exception)

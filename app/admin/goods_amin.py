@@ -10,10 +10,8 @@ from flask_admin import Admin, form
 from wtforms.validators import ValidationError
 import operator
 from flask import request
-from app import get_app
+from app import app
 
-
-app = get_app()
 
 # 内联pdf显示格式
 class InlineModelForm(InlineFormAdmin):

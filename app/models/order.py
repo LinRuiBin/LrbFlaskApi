@@ -1,9 +1,11 @@
 from sqlalchemy import inspect, Column, Integer, String, SmallInteger, orm
+from app import app
 from app.libs.error_code import NotFound, AuthFailed
 from app.models.base import Base, db, MixinJSONSerializer
 from app.models.user import *
 from app.models.adress import *
 from app.models.goods import *
+
 
 class PayOrder(Base):
     __tablename__ = 'pay_order'
@@ -48,9 +50,6 @@ class PayOrder(Base):
 
     @property
     def status_desc(self):
-        from app import get_app
-        app = get_app()
-
         return app.config['PAY_STATUS_DISPLAY_MAPPING'][ str( self.pay_status )]
 
     @property

@@ -9,13 +9,13 @@ python dbmigrate.py db upgrade
 
 '''
 from flask_script import Manager
-from app import create_app
+from app import app
+import app_register
 from flask_migrate import Migrate,MigrateCommand
 from app.models.base import db
 # 必须导入需要更新的模型
 from app.models import base,user, goods, adress,shopCart,order
 
-app = create_app()
 manager = Manager(app)
 # init  migrate upgrade
 # 模型 -> 迁移文件 -> 表
