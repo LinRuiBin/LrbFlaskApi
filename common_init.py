@@ -61,10 +61,9 @@ def createUserManager(app):
 
 def createScheduler(app):
     from app.libs.scheduler import scheduler
-
-    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':  # 解决FLASK DEBUG模式定时任务执行两次
-        scheduler.init_app(app)
-        scheduler.start()
+    # if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':  # 解决FLASK DEBUG模式定时任务执行两次
+    scheduler.init_app(app)
+    scheduler.start()
 
 
 def registerModules():
