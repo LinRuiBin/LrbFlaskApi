@@ -15,6 +15,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True
 PAGE_SIZE = 20
 PAGE_DISPLAY = 20
 RELEASE_VERSION = '1.0.0'
+SCHEDULER_API_ENABLED = True
 
 UPLOAD = {
     'ext':[ 'jpg','gif','bmp','jpeg','png' ],

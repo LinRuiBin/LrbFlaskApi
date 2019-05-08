@@ -1,4 +1,5 @@
 from app import app
+import os
 
 #蓝图 v1
 def register_blueprints(app):
@@ -16,6 +17,7 @@ def register_plugin(app):
     # create_dbdata(app)  #在创建app的时候注册db 这里不用
     create_admin(app)
     createUserManager(app)
+    createScheduler(app)
 
     from flask_bootstrap import Bootstrap
     Bootstrap(app=app)
@@ -55,6 +57,14 @@ def createUserManager(app):
     app.add_template_global(UrlManager.buildStaticUrl , 'buildStaticUrl')
     app.add_template_global(UrlManager.buildUrl , 'buildUrl')
     app.add_template_global(UrlManager.buildImageUrl , 'buildImageUrl')
+
+
+def createScheduler(app):
+    from app.libs.scheduler import scheduler
+
+    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':  # 解决FLASK DEBUG模式定时任务执行两次
+        scheduler.init_app(app)
+        scheduler.start()
 
 
 def registerModules():

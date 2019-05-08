@@ -10,7 +10,7 @@ python dbmigrate.py db upgrade
 '''
 from flask_script import Manager
 from app import app
-import app_register
+import common_init
 from flask_migrate import Migrate,MigrateCommand
 from app.models.base import db
 # 必须导入需要更新的模型

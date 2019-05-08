@@ -5,7 +5,7 @@ __author__ = 'LRB'
 
 
 from app import app
-import app_register
+import common_init
 from app.models.base import db
 from app.models.user import User
 
