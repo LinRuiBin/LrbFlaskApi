@@ -9,7 +9,7 @@ from app import app,manager  #创建app
 import common_init
 from app.libs.error import APIException,APIResponse
 from app.libs.error_code import ServerError
-from app.jobs.tasks.pay import index
+# from app.jobs.tasks.pay import index
 # from app.jobs.launcher import runJob
 
 __author__ = 'LRB'
