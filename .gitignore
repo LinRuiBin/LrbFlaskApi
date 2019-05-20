@@ -2,6 +2,8 @@
 
 #my-config
 secure.py
+celerybeat-schedule.db
+celerybeat.pid
 .dea/workspace.xml
 __pycache__/
 *.py[cod]

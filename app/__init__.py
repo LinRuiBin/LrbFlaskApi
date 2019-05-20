@@ -5,6 +5,7 @@ from .app import Flask
 from flask_script import Manager
 from app.models.base import db
 from app.libs.scheduler import scheduler
+from app.celery import my_celery
 
 import os
 __author__ = 'LRB'
@@ -19,5 +20,16 @@ app.config.from_object('app.config.setting')
 app.config.from_object('app.config.secure')
 manager = Manager(app)
 db.init_app(app)
+#celery 异步任务 定时任务
+def make_celery(app):
 
+    class ContextTask(my_celery.Task):
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return self.run(*args, **kwargs)
+    my_celery.conf.update(app.config)
+    my_celery.Task = ContextTask
+    return my_celery
+
+celery = make_celery(app=app)
 

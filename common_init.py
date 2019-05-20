@@ -21,6 +21,8 @@ def register_plugin(app):
     from flask_bootstrap import Bootstrap
     Bootstrap(app=app)
 
+    # make_celery(app=app) #celery定时任务
+
 # 自动生成文档 /docs/api/ debug模式下显示
 def create_apidoc(app):
     from flask_docs import ApiDoc
@@ -37,6 +39,19 @@ def create_dbdata(app):
     db.init_app(app)
     with app.app_context():
         db.create_all()
+
+
+# #celery 定时任务
+# def make_celery(app):
+#     from app.celery import celery
+#
+#     class ContextTask(celery.Task):
+#         def __call__(self, *args, **kwargs):
+#             with app.app_context():
+#                 return self.run(*args, **kwargs)
+#     celery.conf.update(app.config)
+#     celery.Task = ContextTask
+#     return celery
 
 
 #自动管理平台
@@ -61,6 +76,8 @@ def createUserManager(app):
 def registerModules():
     register_blueprints(app)
     register_plugin(app)
+
+
 
 
 registerModules()
