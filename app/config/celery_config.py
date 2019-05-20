@@ -25,7 +25,7 @@ imports = [
 beat_schedule = {
     "test1": {
         "task": "app.celery.tasks.tetstCelery",  #执行的函数
-        "schedule": 30.0,   # every minute 每分钟执行
+        "schedule": crontab(minute=0, hour="*/6"),   # every minute 每分钟执行
         "args": ()  # # 任务函数参数
     },
 }
