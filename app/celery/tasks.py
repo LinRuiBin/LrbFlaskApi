@@ -12,7 +12,7 @@ import time
 def tetstCelery():
     print('执行异步任务')
     # with app.app_context():
-    time.sleep(20)
+    # time.sleep(20)
     user = User.query.filter_by(nickname='Super').first()
     if user:
         phone = int(user.phone)
