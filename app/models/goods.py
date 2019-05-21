@@ -157,7 +157,7 @@ class Light_Sku(Base):
     id = Column(db.Integer , primary_key=True)
     sku_num = Column(db.String(50) , unique=True,nullable=False) #sku编号
     sku_name =  Column(db.String(50)) #规格商品名称
-    price = Column(db.Float ,nullable=False)
+    price = Column(db.Numeric(10,2) ,nullable=False)
     stock = Column(db.Integer,nullable=False,default=0)
     spu_id = db.Column(db.Integer , db.ForeignKey('light_spu.id'),nullable=False)
     spu = db.relationship(Light_Spu , backref=db.backref("spu_skus"))
