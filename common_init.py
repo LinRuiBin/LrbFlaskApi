@@ -21,7 +21,6 @@ def register_plugin(app):
     from flask_bootstrap import Bootstrap
     Bootstrap(app=app)
 
-    # make_celery(app=app) #celery定时任务
 
 # 自动生成文档 /docs/api/ debug模式下显示
 def create_apidoc(app):
@@ -41,18 +40,14 @@ def create_dbdata(app):
         db.create_all()
 
 
-# #celery 定时任务
-# def make_celery(app):
-#     from app.celery import celery
-#
-#     class ContextTask(celery.Task):
-#         def __call__(self, *args, **kwargs):
-#             with app.app_context():
-#                 return self.run(*args, **kwargs)
-#     celery.conf.update(app.config)
-#     celery.Task = ContextTask
-#     return celery
-
+#redis session
+def create_redis(app):
+    pass
+    # import redis
+    # from flask_session import Session
+    # from app.config.secure import REDIS_HOST,REDIS_PORT,REDIS_PWD
+    # app.config['SESSION_REDIS'] = redis.Redis(host=REDIS_HOST, port= REDIS_PORT, password=REDIS_PWD)
+    # Session.init_app(app=app)
 
 #自动管理平台
 def create_admin(app):

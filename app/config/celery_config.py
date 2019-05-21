@@ -4,8 +4,9 @@ celery -A app.celery worker
 """
 
 from celery.schedules import crontab
+from app.config.secure import celery_redis_url
 
-celery_redis_url = "redis://:LRBlrb123321@localhost:6379/1"
+# celery_redis_url = "redis://:LRBlrb123321@localhost:6379/1"
 
 broker_url = celery_redis_url   # 使用redis存储任务队列
 result_backend = celery_redis_url  # 使用redis存储结果

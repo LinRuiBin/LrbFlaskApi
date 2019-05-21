@@ -6,6 +6,9 @@ from flask_script import Manager
 from app.models.base import db
 from app.libs.scheduler import scheduler
 from app.celery import my_celery
+from flask_cache import Cache
+from app.config import secure
+import redis
 
 import os
 __author__ = 'LRB'
@@ -20,6 +23,7 @@ app.config.from_object('app.config.setting')
 app.config.from_object('app.config.secure')
 manager = Manager(app)
 db.init_app(app)
+redis_db = redis.Redis(host=secure.REDIS_HOST,port=secure.REDIS_PORT,password=secure.REDIS_PWD,db=3)
 #celery 异步任务 定时任务
 def make_celery(app):
 
@@ -32,4 +36,4 @@ def make_celery(app):
     return my_celery
 
 celery = make_celery(app=app)
-
+cache = Cache(app=app,config=secure.REDIS)
