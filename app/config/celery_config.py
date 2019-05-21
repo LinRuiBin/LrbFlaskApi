@@ -5,9 +5,10 @@ celery -A app.celery worker
 
 from celery.schedules import crontab
 
+celery_redis_url = "redis://:LRBlrb123321@localhost:6379/1"
 
-broker_url = "redis://localhost:6379/1"   # 使用redis存储任务队列
-result_backend = "redis://localhost:6379/1"  # 使用redis存储结果
+broker_url = celery_redis_url   # 使用redis存储任务队列
+result_backend = celery_redis_url  # 使用redis存储结果
 
 task_serializer = 'json'
 result_serializer = 'json'
@@ -25,8 +26,8 @@ imports = [
 beat_schedule = {
     "test1": {
         "task": "app.celery.tasks.tetstCelery",  #执行的函数
-        # "schedule": crontab(minute="*/1"),
-        "schedule": crontab(minute=0, hour="*/6"),   # every minute 每分钟执行
+        # "schedule": crontab(minute="*/1"), # every minute 每分钟执行
+        "schedule": crontab(minute=0, hour="*/6"),
         "args": ()  # # 任务函数参数
     },
 }
@@ -36,10 +37,5 @@ beat_schedule = {
 "schedule": crontab(minute="*/10",  # 每十分钟执行
 "schedule": crontab(minute="*/1"),   # 每分钟执行
 "schedule": crontab(minute=0, hour="*/1"),    # 每小时执行
---------------------- 
-作者：Shyllin 
-来源：CSDN 
 原文：https://blog.csdn.net/Shyllin/article/details/80940643 
-版权声明：本文为博主原创文章，转载请附上博文链接！
-
 """

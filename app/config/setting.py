@@ -16,8 +16,6 @@ PAGE_SIZE = 20
 PAGE_DISPLAY = 20
 RELEASE_VERSION = '1.0.0'
 SCHEDULER_API_ENABLED = True
-CELERY_BROKER_URL = 'redis://localhost:6379/1'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
 
 UPLOAD = {
     'ext':[ 'jpg','gif','bmp','jpeg','png' ],
