@@ -9,6 +9,8 @@ from app.celery import my_celery
 from flask_cache import Cache
 from app.config import secure
 import redis
+from flask_limiter import Limiter, HEADERS  # https://github.com/alisaifee/flask-limiter
+from flask_limiter.util import get_remote_address
 
 import os
 __author__ = 'LRB'
@@ -22,8 +24,8 @@ app = Flask(__name__,template_folder='templates')
 app.config.from_object('app.config.setting')
 app.config.from_object('app.config.secure')
 manager = Manager(app)
-db.init_app(app)
-redis_db = redis.Redis(host=secure.REDIS_HOST,port=secure.REDIS_PORT,password=secure.REDIS_PWD,db=3)
+db.init_app(app)  #mysql 数据库 orm
+redis_db = redis.Redis(host=secure.REDIS_HOST,port=secure.REDIS_PORT,password=secure.REDIS_PWD,db=3) #redis数据库初始化
 #celery 异步任务 定时任务
 def make_celery(app):
 
@@ -35,5 +37,14 @@ def make_celery(app):
     my_celery.Task = ContextTask
     return my_celery
 
-celery = make_celery(app=app)
-cache = Cache(app=app,config=secure.REDIS)
+celery = make_celery(app=app) # 异步和定时任务
+cache = Cache(app=app,config=secure.REDIS) #flask-cache初始化  redis
+
+#流量限制
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri=secure.REDIS_URL,
+    headers_enabled=True  # X-RateLimit写入响应头。
+)
