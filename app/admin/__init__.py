@@ -11,7 +11,8 @@ from app.admin.category_admin import *
 from app.admin.adress_admin import *
 from app.admin.shopCart_admin import *
 from app.admin.order_admin import *
-
+from app.admin.order_admin import *
+from app.admin.user_order_Info_admin import *
 
 def init_admin(app):
     admin_base.init_login(app)
@@ -32,3 +33,4 @@ def init_admin(app):
     fadmin.add_view(ShopCart_admin(db.session))
     fadmin.add_view(Order_admin(db.session))
     fadmin.add_view(Order_item_admin(db.session))
+    fadmin.add_view(User_OrderInfo_Admin(db.session))
